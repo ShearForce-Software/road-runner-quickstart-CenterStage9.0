@@ -22,6 +22,9 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(60, -36, Math.toRadians(180)))
+
+                // https://rr.brott.dev/docs/v1-0/builder-ref/  Reference for trajectory segments
+
                 .lineToX(36)
                 .turn(Math.toRadians(-90))
                 .lineToY(12)
