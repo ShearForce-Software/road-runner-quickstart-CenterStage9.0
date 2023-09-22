@@ -100,20 +100,20 @@ public class MeepMeepTesting_ExampleRoute1 {
                 .build());
 
 
-        Image img = null;
-        try { img = ImageIO.read(new File("C:\\Users\\chris\\OneDrive\\Desktop\\FTC\\4_Center Stage\\field-2023-official.png")); }
-        catch (IOException e) {}
-
-        meepMeep.setBackground(img)
-                .setDarkMode(true)
-                .setBackgroundAlpha(0.95f)
-                .addEntity(myBot)
-                .start();
-
-//        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+//        Image img = null;
+//        try { img = ImageIO.read(new File("C:\\Users\\chris\\OneDrive\\Desktop\\FTC\\4_Center Stage\\field-2023-official.png")); }
+//        catch (IOException e) {}
+//
+//        meepMeep.setBackground(img)
 //                .setDarkMode(true)
 //                .setBackgroundAlpha(0.95f)
 //                .addEntity(myBot)
 //                .start();
+
+        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+                .setDarkMode(true)
+                .setBackgroundAlpha(0.95f)
+                .addEntity(myBot)
+                .start();
     }
 }
