@@ -178,10 +178,19 @@ public final class MecanumDrive {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront_leftOdometry");
-        leftBack = hardwareMap.get(DcMotorEx.class, "leftRear_rightRearOdometry");
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightRear");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront_centerOdometry");
+        // original motor names - previous odometry encoder ports
+//        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront_leftOdometry");       //Port 0
+//        leftBack = hardwareMap.get(DcMotorEx.class, "leftRear_rightOdometry");        //Port 2
+//        rightBack = hardwareMap.get(DcMotorEx.class, "rightRear");                    //Port 3
+//        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront_centerOdometry");   //Port 1
+
+        // new motor names - based in parallel odometry pods 0 & 1 in encoder Ports 0 and 4,
+        // perpendicular pod in either encoder Ports 1 or 2
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront_leftOdometry");     // Port 0
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront_centerOdometry"); // Port 1
+        leftBack = hardwareMap.get(DcMotorEx.class, "leftRear");                    // Port 2
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightRear_rightOdometry");// Port 3
+
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

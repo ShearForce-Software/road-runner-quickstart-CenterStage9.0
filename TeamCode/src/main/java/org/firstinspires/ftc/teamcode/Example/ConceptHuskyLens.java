@@ -30,16 +30,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.Example;
 
 import com.qualcomm.hardware.dfrobot.HuskyLens;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.concurrent.TimeUnit;
@@ -59,9 +55,9 @@ import java.util.concurrent.TimeUnit;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-@TeleOp(name = "Sensor: HuskyLens", group = "Sensor")
-@Disabled
-public class SensorHuskyLens extends LinearOpMode {
+@TeleOp(name = "Example: HuskyLens", group = "Example")
+//@Disabled
+public class ConceptHuskyLens extends LinearOpMode {
 
     private final int READ_PERIOD = 1;
 
@@ -70,7 +66,7 @@ public class SensorHuskyLens extends LinearOpMode {
     @Override
     public void runOpMode()
     {
-        huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
+        huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens1");
 
         /*
          * This sample rate limits the reads solely to allow a user time to observe
