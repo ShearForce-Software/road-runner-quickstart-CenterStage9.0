@@ -29,29 +29,41 @@ public class MeepMeepTesting_ExampleRoute1 {
                 // move to spike box
                 .splineTo(new Vector2d(36, -36), Math.toRadians(180))
 
-                //backout and maneuver for pixel stack
-                .setTangent(0)
+                //back out of spike box and maneuver for pixel stack
+//                .setTangent(Math.toRadians(0))
+//                .splineToLinearHeading(new Pose2d(55, -48, Math.toRadians(270)), Math.toRadians(270))
+
+                .setTangent(Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(48, -55), Math.toRadians(180))
 
                 // drive forward toward the pixel stacks
-                .splineTo(new Vector2d(24, -55), Math.toRadians(180))
+                //.splineTo(new Vector2d(15, -55), Math.toRadians(180))
 
-                // turn and approach stack for pickup
-                .splineToSplineHeading(new Pose2d(12, -60, Math.toRadians(270)), Math.toRadians(270))
+                // approach stack for pickup
+//                .setTangent(0)
+//                .splineToConstantHeading(new Vector2d(12, -60), Math.toRadians(270))
+
+                .setTangent(Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(12, -60, Math.toRadians(270)), Math.toRadians(270))
+
+
+                //.splineToSplineHeading(new Pose2d(12, -60, Math.toRadians(270)), Math.toRadians(270))
 
                 // drive across field toward backdrop
                 .setReversed(true)
                 .splineTo(new Vector2d(12, 24), Math.toRadians(90))
+                .setReversed(false)
+//                //constant heading turn 1 to backdrop
+//                .setTangent(90)
+//                .setReversed(true)
+//                .splineToConstantHeading(new Vector2d(24, 36), Math.toRadians(0))
+//
+//                //constant heading turn 2 to backdrop from drop off
+//                .setTangent(0)
+//                .splineToConstantHeading(new Vector2d(36, 48), Math.toRadians(90))
 
-                //constant heading turn 1 to backdrop
-                .setTangent(90)
-                .setReversed(true)
-                .splineToConstantHeading(new Vector2d(24, 36), Math.toRadians(0))
-
-                //constant heading turn 2 to back drop from drop off
-                .setTangent(0)
+                .setTangent(Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(36, 48), Math.toRadians(90))
-
                 // manuever to drive under rigging back to pixel stack
                 .setTangent(180)
                 .splineToConstantHeading(new Vector2d(12, 24), Math.toRadians(270))
@@ -100,20 +112,20 @@ public class MeepMeepTesting_ExampleRoute1 {
                 .build());
 
 
-//        Image img = null;
-//        try { img = ImageIO.read(new File("C:\\Users\\chris\\OneDrive\\Desktop\\FTC\\4_Center Stage\\field-2023-official.png")); }
-//        catch (IOException e) {}
-//
-//        meepMeep.setBackground(img)
-//                .setDarkMode(true)
-//                .setBackgroundAlpha(0.95f)
-//                .addEntity(myBot)
-//                .start();
+        Image img = null;
+        try { img = ImageIO.read(new File("C:\\Users\\chris\\OneDrive\\Desktop\\FTC\\4_Center Stage\\field-2023-official.png")); }
+        catch (IOException e) {}
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+        meepMeep.setBackground(img)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
                 .start();
+
+//        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+//                .setDarkMode(true)
+//                .setBackgroundAlpha(0.95f)
+//                .addEntity(myBot)
+//                .start();
     }
 }
