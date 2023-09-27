@@ -35,7 +35,7 @@ public final class ThreeDeadWheelLocalizer implements Localizer {
         perp = new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightFront_centerOdometry"));
 
         // change direction of encoder
-        par0.setDirection(DcMotorSimple.Direction.REVERSE);
+        par1.setDirection(DcMotorSimple.Direction.REVERSE);
 
         lastPar0Pos = par0.getPositionAndVelocity().position;
         lastPar1Pos = par1.getPositionAndVelocity().position;
