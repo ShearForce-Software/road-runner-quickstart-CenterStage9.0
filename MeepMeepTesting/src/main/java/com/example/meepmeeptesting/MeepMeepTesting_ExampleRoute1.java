@@ -64,6 +64,7 @@ public class MeepMeepTesting_ExampleRoute1 {
 
                 .setTangent(Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(36, 48), Math.toRadians(90))
+
                 // manuever to drive under rigging back to pixel stack
                 .setTangent(180)
                 .splineToConstantHeading(new Vector2d(12, 24), Math.toRadians(270))
@@ -113,7 +114,7 @@ public class MeepMeepTesting_ExampleRoute1 {
 
 
         Image img = null;
-        try { img = ImageIO.read(new File("C:\\Users\\chris\\OneDrive\\Desktop\\FTC\\4_Center Stage\\field-2023-official.png")); }
+        try { img = ImageIO.read(new File("C:\\Users\\shear\\field-2023-juice-dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
