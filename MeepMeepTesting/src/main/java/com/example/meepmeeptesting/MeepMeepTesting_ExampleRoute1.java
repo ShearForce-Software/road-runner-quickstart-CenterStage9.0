@@ -113,8 +113,9 @@ public class MeepMeepTesting_ExampleRoute1 {
                 .build());
 
 
+
         Image img = null;
-        try { img = ImageIO.read(new File("C:\\Users\\shear\\field-2023-juice-dark.png")); }
+        try { img = ImageIO.read(new File("C:\\Users\\shear\\Downloads\\field-2023-juice-dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
@@ -123,10 +124,18 @@ public class MeepMeepTesting_ExampleRoute1 {
                 .addEntity(myBot)
                 .start();
 
-//        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
-//                .setDarkMode(true)
-//                .setBackgroundAlpha(0.95f)
-//                .addEntity(myBot)
-//                .start();
+
+
+
+        /*
+        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+                .setDarkMode(true)
+                .setBackgroundAlpha(0.95f)
+                .addEntity(myBot)
+                .start();
+        */
+
+
     }
+
 }
