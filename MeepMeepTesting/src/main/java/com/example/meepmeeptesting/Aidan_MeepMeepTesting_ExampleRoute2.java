@@ -84,24 +84,24 @@ public class Aidan_MeepMeepTesting_ExampleRoute2 {
                 .build());
 
 
-        Image img = null;
-        try { img = ImageIO.read(new File("C:\\Users\\shear\\field-2023-juice-dark.png")); }
-        catch (IOException e) {}
+//        Image img = null;
+//        try { img = ImageIO.read(new File("C:\\Users\\shear\\field-2023-juice-dark.png")); }
+//        catch (IOException e) {}
+//
+//        meepMeep.setBackground(img)
+//               .setDarkMode(true)
+//                .setBackgroundAlpha(0.95f)
+//                .addEntity(myBot)
+//                .start();
 
-        meepMeep.setBackground(img)
-               .setDarkMode(true)
-                .setBackgroundAlpha(0.95f)
-                .addEntity(myBot)
-                .start();
 
 
-
-        /*meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
                 .start();
-                */
+
 
     }
 }
