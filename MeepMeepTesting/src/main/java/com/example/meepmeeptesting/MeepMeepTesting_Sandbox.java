@@ -6,12 +6,6 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 public class MeepMeepTesting_Sandbox {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(600);
@@ -22,22 +16,22 @@ public class MeepMeepTesting_Sandbox {
                 .setDimensions(17, 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(60, -36, Math.toRadians(180)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-36, -60, Math.toRadians(90)))
 
                 // https://rr.brott.dev/docs/v1-0/builder-ref/  Reference for trajectory segments
 
                 //drive to center of spike box
-                .splineTo(new Vector2d(36, -36), Math.toRadians(180))
+                .splineTo(new Vector2d(-36, -36), Math.toRadians(90))
 
                 //back out of spike box
-                .setTangent(Math.toRadians(0))
-                .splineTo(new Vector2d(41, -36), Math.toRadians(0))
+                .setTangent(Math.toRadians(270))
+                .splineTo(new Vector2d(-36, -41), Math.toRadians(270))
 
-                // rotate intake and psoition for initial apprach to pixel stack
-                .splineTo(new Vector2d(48, -48), Math.toRadians(-90))
+                // rotate intake and position for initial approach to pixel stack
+                .splineTo(new Vector2d(-50, -48), Math.toRadians(180))
 
                 // drive to far pixel stack for single pixel pickup
-                .splineToConstantHeading(new Vector2d(12, -60), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-60, -12), Math.toRadians(180))
 
                 // cross straight across field under stage door
                 .setTangent(Math.toRadians(90))
@@ -105,17 +99,6 @@ public class MeepMeepTesting_Sandbox {
 //                .lineToY(-36)
 //                .turn(Math.toRadians(-90))
                 .build());
-
-
-//        Image img = null;
-//        try { img = ImageIO.read(new File("C:\\Users\\chris\\OneDrive\\Desktop\\FTC\\4_Center Stage\\field-2023-official.png")); }
-//        catch (IOException e) {}
-//
-//        meepMeep.setBackground(img)
-//                .setDarkMode(true)
-//                .setBackgroundAlpha(0.95f)
-//                .addEntity(myBot)
-//                .start();
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
                 .setDarkMode(true)
