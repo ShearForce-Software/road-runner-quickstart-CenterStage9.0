@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Aidan_MeepMeepTesting_ExampleRoute2 {
+public class Aidan_MeepMeepTesting_ExampleRoute3 {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(600);
 
@@ -22,24 +22,24 @@ public class Aidan_MeepMeepTesting_ExampleRoute2 {
                 .setDimensions(17, 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-60, -36, Math.toRadians(0)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-36, 60, Math.toRadians(-90)))
 
                 // https://rr.brott.dev/docs/v1-0/builder-ref/  Reference for trajectory segments
 
                 // move to spike box
-                .splineTo(new Vector2d(-36, -36), Math.toRadians(270))
+                .splineTo(new Vector2d(-36, 36), Math.toRadians(180))
 
                 //backout and maneuver for pixel stack
-                .setTangent(Math.toRadians(270))
-                .splineToConstantHeading(new Vector2d(-48, -55), Math.toRadians(270))
+                .setTangent(Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(-55, 48), Math.toRadians(180))
 
                 // drive forward toward the pixel stacks
-                .setTangent(0)
-                .splineTo(new Vector2d(-12, -55), Math.toRadians(0))
+                .setTangent(-90)
+                .splineTo(new Vector2d(-55, 12), Math.toRadians(-90))
 
                 // Approach to pixel stack
-                .setTangent(0)
-                .splineToLinearHeading(new Pose2d(-12, -60, Math.toRadians(270)), Math.toRadians(270))
+                .setTangent(90)
+                .splineToConstantHeading(new Vector2d(-60, 12), Math.toRadians(0))
 
              /*   // Drive across field toward backdrop
                 .setReversed(true)
@@ -81,11 +81,12 @@ public class Aidan_MeepMeepTesting_ExampleRoute2 {
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(-12, 55), Math.toRadians(90))
                 */
+
                 .build());
 
 
         Image img = null;
-       try { img = ImageIO.read(new File("C:\\Users\\shear\\field-2023-juice-dark[final].png")); }
+       try { img = ImageIO.read(new File("C:\\Users\\shear\\field-2023-juice-dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)

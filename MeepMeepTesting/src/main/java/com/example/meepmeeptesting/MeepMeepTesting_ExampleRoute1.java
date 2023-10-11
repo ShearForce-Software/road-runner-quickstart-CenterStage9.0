@@ -114,12 +114,12 @@ public class MeepMeepTesting_ExampleRoute1 {
 
 
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
+      /*  meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
                 .setDarkMode(false)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
                 .start();
-
+*/
 
 
     }
