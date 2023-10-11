@@ -64,6 +64,7 @@ public class MeepMeepTesting_ExampleRoute1 {
 
                 .setTangent(Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(36, 48), Math.toRadians(90))
+
                 // manuever to drive under rigging back to pixel stack
                 .setTangent(180)
                 .splineToConstantHeading(new Vector2d(12, 24), Math.toRadians(270))
@@ -112,20 +113,15 @@ public class MeepMeepTesting_ExampleRoute1 {
                 .build());
 
 
-        Image img = null;
-        try { img = ImageIO.read(new File("C:\\Users\\chris\\OneDrive\\Desktop\\FTC\\4_Center Stage\\field-2023-official.png")); }
-        catch (IOException e) {}
 
-        meepMeep.setBackground(img)
-                .setDarkMode(true)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
+                .setDarkMode(false)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
                 .start();
 
-//        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
-//                .setDarkMode(true)
-//                .setBackgroundAlpha(0.95f)
-//                .addEntity(myBot)
-//                .start();
+
+
     }
+
 }
