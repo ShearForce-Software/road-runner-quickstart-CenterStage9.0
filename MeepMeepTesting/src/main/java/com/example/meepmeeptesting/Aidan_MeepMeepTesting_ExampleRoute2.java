@@ -41,7 +41,7 @@ public class Aidan_MeepMeepTesting_ExampleRoute2 {
                 .setTangent(0)
                 .splineToLinearHeading(new Pose2d(-12, -60, Math.toRadians(270)), Math.toRadians(270))
 
-             /*   // Drive across field toward backdrop
+                // Drive across field toward backdrop
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-12, 20, Math.toRadians(270)), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(-36, 48), Math.toRadians(180))
@@ -57,7 +57,7 @@ public class Aidan_MeepMeepTesting_ExampleRoute2 {
                 .splineToConstantHeading(new Vector2d(-12, 20), Math.toRadians(270))
                 .splineToLinearHeading(new Pose2d(-12, -60, Math.toRadians(270)), Math.toRadians(270))
 
-                // manuever to drive under rigging back to backboard then back to stack
+              /*  // manuever to drive under rigging back to backboard then back to stack
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-12, 20, Math.toRadians(270)), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(-36, 48), Math.toRadians(180))

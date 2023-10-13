@@ -1,10 +1,12 @@
 package com.example.meepmeeptesting;
 
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
+import java.util.concurrent.TimeUnit;
 
 import java.awt.Image;
 import java.io.File;
@@ -31,29 +33,41 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
 
                 //backout and maneuver for pixel stack
                 .setTangent(Math.toRadians(180))
-                .splineToConstantHeading(new Vector2d(-55, 48), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(-50, 48), Math.toRadians(180))
 
                 // drive forward toward the pixel stacks
                 .setTangent(-90)
-                .splineTo(new Vector2d(-55, 12), Math.toRadians(-90))
-
+                .splineToConstantHeading(new Vector2d(-55, 12), Math.toRadians(-90))
                 // Approach to pixel stack
-                .setTangent(90)
-                .splineToConstantHeading(new Vector2d(-60, 12), Math.toRadians(0))
+                .setTangent(180)
+                .splineToConstantHeading(new Vector2d(-60, 12), Math.toRadians(180))
+                        .waitSeconds(10)
 
-             /*   // Drive across field toward backdrop
+                // Drive across field toward backdrop
+
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-12, 20, Math.toRadians(270)), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-36, 48), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
                 // back to stack
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-12, 20), Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(-12, -60, Math.toRadians(270)), Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
                // to backboard and then to stack
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-12, 20, Math.toRadians(270)), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-36, 48), Math.toRadians(180))
-                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
+                .build());
+        try
+        {
+            Thread.sleep(2000);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+
+
+              /*  .setReversed(false)
                 .splineToConstantHeading(new Vector2d(-12, 20), Math.toRadians(270))
                 .splineToLinearHeading(new Pose2d(-12, -60, Math.toRadians(270)), Math.toRadians(270))
 
@@ -81,8 +95,7 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(-12, 55), Math.toRadians(90))
                 */
-
-                .build());
+                        //.build());
 
 
         Image img = null;
