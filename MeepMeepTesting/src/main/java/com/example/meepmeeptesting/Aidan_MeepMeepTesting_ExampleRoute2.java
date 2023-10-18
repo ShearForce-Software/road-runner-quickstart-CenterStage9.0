@@ -57,15 +57,16 @@ public class Aidan_MeepMeepTesting_ExampleRoute2 {
                 .splineToConstantHeading(new Vector2d(-12, 20), Math.toRadians(270))
                 .splineToLinearHeading(new Pose2d(-12, -60, Math.toRadians(270)), Math.toRadians(270))
 
-              /*  // manuever to drive under rigging back to backboard then back to stack
+                // manuever to drive under rigging back to backboard then back to stack
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-12, 20, Math.toRadians(270)), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(-36, 48), Math.toRadians(180))
+                /*
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(-12, 20), Math.toRadians(-90))
                 .splineToLinearHeading(new Pose2d(-12, -48, Math.toRadians(270)), Math.toRadians(270))
 
-                /*
+
                // to new stack
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-24, -60, Math.toRadians(270)), Math.toRadians(90))
@@ -75,12 +76,12 @@ public class Aidan_MeepMeepTesting_ExampleRoute2 {
                 .splineToLinearHeading(new Pose2d(-12, -50, Math.toRadians(270)), Math.toRadians(90))
                 .splineToLinearHeading(new Pose2d(-12, 20, Math.toRadians(270)), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(-36, 48), Math.toRadians(180))
-
+*/
                 // park in backstage
                 .setTangent(270)
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(-12, 55), Math.toRadians(90))
-                */
+
                 .build());
 
 
