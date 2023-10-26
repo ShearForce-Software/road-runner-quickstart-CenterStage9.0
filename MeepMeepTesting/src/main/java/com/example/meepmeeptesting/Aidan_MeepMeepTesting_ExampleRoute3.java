@@ -14,8 +14,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import kotlin.reflect.KFunction;
+
 public class Aidan_MeepMeepTesting_ExampleRoute3 {
     public static void main(String[] args) {
+        int x = 0;
+        int y = 0;
+
         MeepMeep meepMeep = new MeepMeep(600);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
@@ -41,7 +46,7 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 // Approach to pixel stack
                 .setTangent(180)
                 .splineToConstantHeading(new Vector2d(-60, 12), Math.toRadians(180))
-                        .waitSeconds(10)
+                      //  .waitSeconds(10)
 
                 // Drive across field toward backdrop
 
@@ -56,8 +61,8 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
-                .build());
-        try
+              //  .build());
+       /* try
         {
             Thread.sleep(2000);
         }
@@ -65,37 +70,39 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
         {
             Thread.currentThread().interrupt();
         }
+        */
 
-
-              /*  .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-12, 20), Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(-12, -60, Math.toRadians(270)), Math.toRadians(270))
+                .setReversed(false)
+                .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
 
                 // manuever to drive under rigging back to backboard then back to stack
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-12, 20, Math.toRadians(270)), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-36, 48), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
+/*
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-12, 20), Math.toRadians(-90))
-                .splineToLinearHeading(new Pose2d(-12, -48, Math.toRadians(270)), Math.toRadians(270))
+                .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-48, 12, Math.toRadians(180)), Math.toRadians(180))
 
-                /*
+
                // to new stack
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-24, -60, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-60, 24, Math.toRadians(180)), Math.toRadians(0))
 
                 // drive to backdrop
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-12, -50, Math.toRadians(270)), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(-12, 20, Math.toRadians(270)), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-36, 48), Math.toRadians(180))
-
+                .splineToLinearHeading(new Pose2d(-50, 12, Math.toRadians(180)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
+                .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
+*/
                 // park in backstage
-                .setTangent(270)
+                .setTangent(90)
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-12, 55), Math.toRadians(90))
-                */
-                        //.build());
+                .splineToConstantHeading(new Vector2d(48, 12), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(63, 12, Math.toRadians(180)), Math.toRadians(0))
+
+                        .build());
 
 
         Image img = null;
@@ -109,7 +116,35 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 .start();
 
 
-
+      /*  public void spikeMark()
+        {
+            //Use cameras and find the correct location for the team art object
+            //Release team art onto the correct line
+        }
+        public void initialIntake()
+        {
+            //Activate the intake servos
+            //Use sensors to make the intakes only take one pixel
+        }
+        static void raiseArm()
+        {
+            //Raise the arm by coding servos
+            //Should occur around (12,12) on the Cartesian plane
+        }
+        static void lowerArm()
+        {
+         // Lower the arm by coding servos
+         //Should occur around (12,12)
+        }
+        static void pixelDelivery()
+        {
+            //Code the robot to slightly decelerate to reduce the probability of collision
+            // Code the arm to drop the pixel on back board.
+        }
+        static void generalIntake()
+        {
+            // Code the sensors to stop moving after the robot has two pixels
+        }
       /*  meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
