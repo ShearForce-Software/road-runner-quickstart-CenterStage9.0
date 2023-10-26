@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.TankDrive;
-
+// EXAMPLE ROUTE 1 CORRECT ORIENTATION
 @TeleOp(name="splineTestClaire", group="Example")
 public final class splineTestCopy extends LinearOpMode {
     @Override
@@ -34,6 +34,8 @@ public final class splineTestCopy extends LinearOpMode {
                             .setTangent(Math.toRadians(90))
                             .splineToLinearHeading(new Pose2d(-60, -12, Math.toRadians(180)), Math.toRadians(180))
 
+                            //2 second pickup
+                            .waitSeconds(2)
 
                             // drive across field toward backdrop
                             .setReversed(true)
@@ -44,12 +46,18 @@ public final class splineTestCopy extends LinearOpMode {
                             .setTangent(Math.toRadians(0))
                             .splineToConstantHeading(new Vector2d(48, -36), Math.toRadians(0))
 
+                            //2 second drop off
+                            .waitSeconds(2)
+
                             // return to center field
                             .setTangent(90)
                             .splineToConstantHeading(new Vector2d(24, -12), Math.toRadians(180))
 
                             // drive to pixel stack for pickup #2
                             .splineTo(new Vector2d(-60, -12), Math.toRadians(180))
+
+                            //2 second pickup
+                            .waitSeconds(2)
 
                             // drive across field toward backdrop
                             .setReversed(true)
@@ -60,6 +68,9 @@ public final class splineTestCopy extends LinearOpMode {
                             .setTangent(0)
                             .splineToConstantHeading(new Vector2d(48, -36), Math.toRadians(0))
 
+                            //2 second drop off
+                            .waitSeconds(2)
+
                             // return to center field
                             .setTangent(90)
                             .splineToConstantHeading(new Vector2d(24, -12), Math.toRadians(180))
@@ -67,14 +78,19 @@ public final class splineTestCopy extends LinearOpMode {
                             // drive to pixel stack for pickup #3
                             .splineTo(new Vector2d(-60, -12), Math.toRadians(180))
 
+                            //2 second pickup
+                            .waitSeconds(2)
+
                             // drive across field toward backdrop
                             .setReversed(true)
                             .splineTo(new Vector2d(24, -12), Math.toRadians(0))
 
-
                             // approach backdrop to drop off pixel
                             .setTangent(0)
                             .splineToConstantHeading(new Vector2d(48, -36), Math.toRadians(0))
+
+                            //2 second for drop off
+                            .waitSeconds(2)
 
                             // turn to park in backstage
                             .setTangent(180)

@@ -55,7 +55,8 @@ import java.util.concurrent.TimeUnit;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-@TeleOp(name = "Example: HuskyLens", group = "Example")
+@TeleOp(name = "Example: Hus" +
+        "kyLens", group = "Example")
 //@Disabled
 public class ConceptHuskyLens extends LinearOpMode {
 
@@ -107,7 +108,7 @@ public class ConceptHuskyLens extends LinearOpMode {
          * within the OpMode by calling selectAlgorithm() and passing it one of the values
          * found in the enumeration HuskyLens.Algorithm.
          */
-        huskyLens.selectAlgorithm(HuskyLens.Algorithm.TAG_RECOGNITION);
+        huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
 
         telemetry.update();
         waitForStart();
@@ -138,7 +139,6 @@ public class ConceptHuskyLens extends LinearOpMode {
             for (int i = 0; i < blocks.length; i++) {
                 telemetry.addData("Block", blocks[i].toString());
             }
-
             telemetry.update();
         }
     }
