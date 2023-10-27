@@ -39,6 +39,9 @@ public class MeepMeepTesting_ExampleRoute1_Rotated_Orientation {
                 .setTangent(Math.toRadians(90))
                 .splineToLinearHeading(new Pose2d(-60, -12, Math.toRadians(180)), Math.toRadians(180))
 
+                //2 seconds for two pixels
+                
+
 
                 // drive across field toward backdrop
                 .setReversed(true)

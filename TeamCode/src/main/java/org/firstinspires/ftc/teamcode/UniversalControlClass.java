@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -21,6 +23,9 @@ public class  UniversalControlClass {
     DcMotor rightRear;
     BNO055IMU imu;
     Servo   grabberServo1;
+    CRServo leftIntake;
+    CRServo rightIntake;
+    RevBlinkinLedDriver.BlinkinPattern pattern;
 
 
     //TODO: set universal variables (public static to make available in dashboard
@@ -44,6 +49,8 @@ public class  UniversalControlClass {
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
+        leftIntake = hardwareMap.get(CRServo.class, "leftIntake");
+        rightIntake = hardwareMap.get(CRServo.class, "rightIntake");
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);

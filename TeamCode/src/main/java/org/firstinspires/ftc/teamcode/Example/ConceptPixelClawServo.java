@@ -31,33 +31,33 @@ package org.firstinspires.ftc.teamcode.Example;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+
 /*
- * This OpMode moves a single continuous servo until Stop is pressed.
+ * This OpMode moves a single servo 180 degrees on button push.
  *
- * This code assumes a Servo configured with the name "contServo1" as is found on a Robot.
+ * This code assumes a Servo configured with the name "pixelClawServo1" as is found on a Robot.
  *
  */
-@TeleOp(name = "Example: Cont Servo", group = "Example")
+@TeleOp(name = "Example: Pixel Claw Servo", group = "Example")
 //@Disabled
-public class ConceptContServo extends LinearOpMode {
+public class ConceptPixelClawServo extends LinearOpMode {
 
     // Define class members
-    CRServo contServo1;
-    CRServo contServo2;
+    Servo pixelClawServo1;
+    double close = 0.065;
+    double open = 0.8;
     @Override
     public void runOpMode() {
 
         // Connect to servo (Assume Robot Left Hand)
-        // Change the text in quotes to match any servo name on your robot.
-        contServo1 = hardwareMap.get(CRServo.class, "contServo1");
-        contServo2 = hardwareMap.get(CRServo.class, "contServo2");
+        pixelClawServo1 = hardwareMap.get(Servo.class, "pixelClawServo1");
+        pixelClawServo1.setPosition(open);
+
 
         // Wait for the start button
-        telemetry.addData(">", "Press Start to move Servo." );
+        telemetry.addData(">", "Press A to grab pixel, Press B to release pixel" );
         telemetry.update();
         waitForStart();
 
@@ -65,12 +65,15 @@ public class ConceptContServo extends LinearOpMode {
         // Scan servo till stop pressed.
         while(opModeIsActive()){
 
-            // Set the contServo direction and power;
-            contServo1.setDirection(DcMotorSimple.Direction.REVERSE);
-            contServo1.setPower(1.0);
-            contServo2.setDirection(DcMotorSimple.Direction.FORWARD);
-            contServo2.setPower(1.0);
-            //idle();
+            // Set the pixel claw Servo position based on button push
+            if (gamepad1.a) {
+                pixelClawServo1.setPosition(close);
+            } else if (gamepad1.b) {
+                pixelClawServo1.setPosition(open);
+            }
+            else
+                pixelClawServo1.setPosition(pixelClawServo1.getPosition());
+
         }
             // Display the current value
             telemetry.addData(">", "Press Stop to end test." );
