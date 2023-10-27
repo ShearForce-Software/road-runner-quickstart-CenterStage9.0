@@ -20,10 +20,15 @@ public class  UniversalControlClass {
     DcMotor rightFront;
     DcMotor rightRear;
     BNO055IMU imu;
+    Servo   grabberServo1;
+
 
     //TODO: set universal variables (public static to make available in dashboard
     boolean IsDriverControl;
     boolean IsFieldCentric;
+    double  grabberPosition = 0; // Start at minimum rotational position
+    public static double grabPosition = 0.5;
+    public static double dropPosition = 0;
 
     //TODO: Add any other specification variables
     public UniversalControlClass(boolean isDriverControl, boolean isFieldCentric, LinearOpMode opMode) {
@@ -38,6 +43,7 @@ public class  UniversalControlClass {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
@@ -84,6 +90,23 @@ public class  UniversalControlClass {
     public void TransferDeliver() {
         //TODO: CLAIRE grab, rotate, drop mechanism for outtake
         //theoretical transfer for now, just worry about open and close servos for grab and drop
+        //close servo to grab
+        setGrabberPosition(grabPosition);
+        //TODO rotate something
+        //open servo to drop
+        setGrabberPosition(dropPosition);
+    }
+    public void setGrabberPosition (double position)
+    {
+        grabberPosition = position;
+        grabberServo1.setPosition(grabberPosition);
+    }
+
+    public void printGrabberPosition ()
+    {
+        // Display the current value
+        opMode.telemetry.addData("Grabber Position", "%5.2f", grabberPosition);
+        opMode.telemetry.update();
     }
 
     public void driveControlsRobotCentric() {
