@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Twist2dDual;
 import com.acmerobotics.roadrunner.Vector2dDual;
 import com.acmerobotics.roadrunner.ftc.Encoder;
 import com.acmerobotics.roadrunner.ftc.FlightRecorder;
+import com.acmerobotics.roadrunner.ftc.OverflowEncoder;
 import com.acmerobotics.roadrunner.ftc.PositionVelocityPair;
 import com.acmerobotics.roadrunner.ftc.RawEncoder;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -16,9 +17,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 @Config
 public final class ThreeDeadWheelLocalizer implements Localizer {
     public static class  Params {
-        public double par0YTicks = -6430.833003153202; // y position of the first parallel encoder (in tick units)
-        public double par1YTicks = 6381.723848106822; // y position of the second parallel encoder (in tick units)
-        public double perpXTicks = 2319.4813231469284; // x position of the perpendicular encoder (in tick units)
+        public double par0YTicks = -6408.5319784878475; // y position of the first parallel encoder (in tick units)
+        public double par1YTicks =  6784.520025503485; // y position of the second parallel encoder (in tick units)
+        public double perpXTicks =  -400.91253948181014; // x position of the perpendicular encoder (in tick units)
     }
 
     public static Params PARAMS = new Params();
@@ -30,11 +31,12 @@ public final class ThreeDeadWheelLocalizer implements Localizer {
     private int lastPar0Pos, lastPar1Pos, lastPerpPos;
 
     public ThreeDeadWheelLocalizer(HardwareMap hardwareMap, double inPerTick) {
-        par0 = new RawEncoder(hardwareMap.get(DcMotorEx.class, "leftFront_leftOdometry"));
-        par1 = new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightRear_rightOdometry"));
-        perp = new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightFront_centerOdometry"));
+        par0 = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "leftFront_leftOdometry")));
+        par1 = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightRear_rightOdometry")));
+        perp = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightFront_centerOdometry")));
 
         // change direction of encoder
+        par0.setDirection(DcMotorSimple.Direction.REVERSE);
         par1.setDirection(DcMotorSimple.Direction.REVERSE);
 
         lastPar0Pos = par0.getPositionAndVelocity().position;

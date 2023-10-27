@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -21,6 +22,11 @@ public class  UniversalControlClass {
     DcMotor leftRear;
     DcMotor rightFront;
     DcMotor rightRear;
+    CRServo intakeLeft;
+    CRServo intakeRight;
+    DistanceSensor leftHopper;
+    DistanceSensor rightHopper;
+    HuskyLens huskyLens;
     BNO055IMU imu;
     Servo   grabberServo1;
     CRServo leftIntake;
@@ -31,6 +37,8 @@ public class  UniversalControlClass {
     //TODO: set universal variables (public static to make available in dashboard
     boolean IsDriverControl;
     boolean IsFieldCentric;
+    int hopperDistance = 5;
+    HuskyLens.Block[] blocks = huskyLens.blocks();
     double  grabberPosition = 0; // Start at minimum rotational position
     public static double grabPosition = 0.5;
     public static double dropPosition = 0;
@@ -48,6 +56,8 @@ public class  UniversalControlClass {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
+        intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
         leftIntake = hardwareMap.get(CRServo.class, "leftIntake");
         rightIntake = hardwareMap.get(CRServo.class, "rightIntake");
@@ -68,6 +78,10 @@ public class  UniversalControlClass {
 
     public void IntakeDistanceStop() {
         //TODO: JACOB stop intake servos when distance
+        if((leftHopper.getDistance(DistanceUnit.MM) < hopperDistance) && (rightHopper.getDistance(DistanceUnit.MM) < hopperDistance)){
+            intakeLeft.setPower(0);
+            intakeRight.setPower(0);
+        }
     }
 
     public void SlidesUp(){
@@ -81,7 +95,15 @@ public class  UniversalControlClass {
     public void LightControl() {
         //TODO: AIDAN Blinkin module with color detection
     }
-
+    public void HuskyLensInit(){
+        if (!huskyLens.knock()) {
+            opMode.telemetry.addData(">>", "Problem communicating with " + huskyLens.getDeviceName());
+        } else {
+            opMode.telemetry.addData(">>", "Press start to continue");
+        }
+        huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
+        opMode.telemetry.update();
+    }
     public void DetectTeamArt() {
         //TODO: JACOB detect team art location and set variable for location
     }
