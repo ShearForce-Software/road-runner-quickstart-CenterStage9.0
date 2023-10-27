@@ -106,6 +106,16 @@ public class  UniversalControlClass {
     }
     public void DetectTeamArt() {
         //TODO: JACOB detect team art location and set variable for location
+        HuskyLens.Block[] blocks = huskyLens.blocks();
+        if (blocks.length <0){
+            int xVal = blocks[0].x;
+            //x value ranges from left to right 0 to 320, with 160 being the center
+            //create variables for x min/max values for each spike mark location 1,2,3
+            //determine position and assign variable for drive in autonomous
+        }
+        else{
+            //pick a spot
+        }
     }
 
     public void LaunchAirplane() {
