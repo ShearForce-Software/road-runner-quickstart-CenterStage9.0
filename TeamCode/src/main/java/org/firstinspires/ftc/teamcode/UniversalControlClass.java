@@ -29,8 +29,6 @@ public class  UniversalControlClass {
     HuskyLens huskyLens;
     BNO055IMU imu;
     Servo   grabberServo1;
-    CRServo leftIntake;
-    CRServo rightIntake;
     RevBlinkinLedDriver.BlinkinPattern pattern;
 
 
@@ -59,8 +57,6 @@ public class  UniversalControlClass {
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
-        leftIntake = hardwareMap.get(CRServo.class, "leftIntake");
-        rightIntake = hardwareMap.get(CRServo.class, "rightIntake");
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
