@@ -22,6 +22,8 @@ public class  UniversalControlClass {
     DcMotor leftRear;
     DcMotor rightFront;
     DcMotor rightRear;
+    DcMotor rightSlide;
+    DcMotor leftSlide;
     CRServo intakeLeft;
     CRServo intakeRight;
     DistanceSensor leftHopper;
@@ -57,6 +59,8 @@ public class  UniversalControlClass {
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
+        rightSlide = hardwareMap.get(DcMotor.class, "right_slide");
+        leftSlide = hardwareMap.get(DcMotor.class, "left_slide");
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
