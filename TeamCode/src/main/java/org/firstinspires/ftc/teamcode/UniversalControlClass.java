@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +25,7 @@ public class  UniversalControlClass {
     DcMotor rightRear;
     DcMotor rightSlide;
     DcMotor leftSlide;
+    DigitalChannel SlideLimit;
     CRServo intakeLeft;
     CRServo intakeRight;
     DistanceSensor leftHopper;
@@ -34,6 +36,7 @@ public class  UniversalControlClass {
     RevBlinkinLedDriver.BlinkinPattern pattern;
 
 
+
     //TODO: set universal variables (public static to make available in dashboard
     boolean IsDriverControl;
     boolean IsFieldCentric;
@@ -42,6 +45,10 @@ public class  UniversalControlClass {
     double  grabberPosition = 0; // Start at minimum rotational position
     public static double grabPosition = 0.5;
     public static double dropPosition = 0;
+
+    public static final double SLIDE_POWER   = 0.50;
+    public static final int SLIDE_MAX_HEIGHT = 500;
+    public static final int SLIDE_MIN_HEIGHT = 0;
 
     //TODO: Add any other specification variables
     public UniversalControlClass(boolean isDriverControl, boolean isFieldCentric, LinearOpMode opMode) {
@@ -61,10 +68,16 @@ public class  UniversalControlClass {
         grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
         rightSlide = hardwareMap.get(DcMotor.class, "right_slide");
         leftSlide = hardwareMap.get(DcMotor.class, "left_slide");
+        SlideLimit = hardwareMap.get(DigitalChannel.class, "SlideLimit");
+
+
+
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
+
+        SlideLimit.setMode(DigitalChannel.Mode.INPUT);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -86,10 +99,53 @@ public class  UniversalControlClass {
 
     public void SlidesUp(){
         //TODO: CLAIRE slides up w/ limit switch
+        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
+        rightSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
+        SetSlidePower(SLIDE_POWER);
+
+    }
+    public void SetSlidePower(double power){
+        //TODO: CLAIRE slides up w/ limit switch
+        leftSlide.setPower(power);
+        rightSlide.setPower(power);
+        if (SlideLimit.getState() == false && power < 0)
+        {
+            leftSlide.setPower(0);
+            rightSlide.setPower(0);
+            leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        }
+        else
+        {
+            leftSlide.setPower(power);
+            rightSlide.setPower(power);
+        }
+
     }
 
     public void SlidesDown() {
         //TODO: CLAIRE slides down w/ limit switch
+        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
+        rightSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
+        SetSlidePower(-1*SLIDE_POWER);
+    }
+
+    public void CheckForSlideLimit()
+    {
+        if (SlideLimit.getState() == false)
+        {
+            leftSlide.setPower(0);
+            rightSlide.setPower(0);
+            leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        }
+
     }
 
     public void LightControl() {
