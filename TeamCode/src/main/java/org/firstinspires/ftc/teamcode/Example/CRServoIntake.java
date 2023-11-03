@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode.Example;
+import android.annotation.SuppressLint;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,10 +11,12 @@ public class CRServoIntake extends LinearOpMode
 {
     CRServo leftIntake;
     CRServo rightIntake;
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void runOpMode() {
     leftIntake = hardwareMap.get(CRServo.class, "leftIntake");
     rightIntake = hardwareMap.get(CRServo.class, "rightIntake");
+
         telemetry.addData(">", "Press Start to move Servo." );
         telemetry.update();
         waitForStart();

@@ -5,7 +5,6 @@ public class ConceptBlinkin
 {
     RevBlinkinLedDriver blinkinLedDriverLeft;
     RevBlinkinLedDriver blinkinLedDriverRight;
-    int side;
     RevBlinkinLedDriver.BlinkinPattern pattern;
     public void SetLeftToColor(int number, int side)
     {

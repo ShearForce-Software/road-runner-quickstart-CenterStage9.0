@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -22,14 +24,16 @@ public class  UniversalControlClass {
     DcMotor leftRear;
     DcMotor rightFront;
     DcMotor rightRear;
-    CRServo intakeLeft;
-    CRServo intakeRight;
+    CRServo leftIntake;
+    CRServo rightIntake;
     DistanceSensor leftHopper;
     DistanceSensor rightHopper;
     HuskyLens huskyLens;
     BNO055IMU imu;
     Servo   grabberServo1;
     RevBlinkinLedDriver.BlinkinPattern pattern;
+    RevBlinkinLedDriver blinkinLedDriverLeft;
+    RevBlinkinLedDriver blinkinLedDriverRight;
 
 
     //TODO: set universal variables (public static to make available in dashboard
@@ -54,13 +58,18 @@ public class  UniversalControlClass {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-        intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
-        intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
+        leftIntake = hardwareMap.get(CRServo.class, "leftIntake");
+        rightIntake = hardwareMap.get(CRServo.class, "rightIntake");
         grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
+
+        leftIntake.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftIntake.setPower(1.0);
+        rightIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightIntake.setPower(1.0);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -70,13 +79,14 @@ public class  UniversalControlClass {
 
     public void ServoIntake() {
         // TODO: AIDAN continuous rotation servo intake
+
     }
 
     public void IntakeDistanceStop() {
         //TODO: JACOB stop intake servos when distance
         if((leftHopper.getDistance(DistanceUnit.MM) < hopperDistance) && (rightHopper.getDistance(DistanceUnit.MM) < hopperDistance)){
-            intakeLeft.setPower(0);
-            intakeRight.setPower(0);
+            leftIntake.setPower(0);
+            rightIntake.setPower(0);
         }
     }
 
@@ -88,9 +98,66 @@ public class  UniversalControlClass {
         //TODO: CLAIRE slides down w/ limit switch
     }
 
-    public void LightControl() {
+   // public void LightControl() {
         //TODO: AIDAN Blinkin module with color detection
+
+/*               1:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+
+                 2:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+                    break;
+                 3:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+                    break;
+                 4:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+                    break;
+                default:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+                    break;
+
+ */
+
+        public void SetLeftToColor( int number)
+        {
+            SetToColor(number, 1);
+            }
+    public void SetRightToColor( int number)
+    {
+        SetToColor(number, 2);
     }
+    private void SetToColor( int number, int side)
+    {
+            switch (number)
+            {
+
+                case 1:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+                    break;
+                case 2:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+                    break;
+                case 3:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+                    break;
+                case 4:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+                    break;
+                default:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+                    break;
+            }
+            if (side ==1)
+            {
+                blinkinLedDriverLeft.setPattern(pattern);
+            }
+            else
+            {
+                blinkinLedDriverRight.setPattern(pattern);
+            }
+        }
+
     public void HuskyLensInit(){
         if (!huskyLens.knock()) {
             opMode.telemetry.addData(">>", "Problem communicating with " + huskyLens.getDeviceName());
@@ -100,6 +167,7 @@ public class  UniversalControlClass {
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
         opMode.telemetry.update();
     }
+
     public void DetectTeamArt() {
         //TODO: JACOB detect team art location and set variable for location
         HuskyLens.Block[] blocks = huskyLens.blocks();
