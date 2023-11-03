@@ -52,10 +52,10 @@ public class  UniversalControlClass {
 
     public void Init (HardwareMap hardwareMap) {
         //TODO: hardware map all servos, motors, sensors, and cameras
-        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        leftFront = hardwareMap.get(DcMotor.class, "left_front");
+        leftRear = hardwareMap.get(DcMotor.class, "left_rear");
+        rightFront = hardwareMap.get(DcMotor.class, "right_front");
+        rightRear = hardwareMap.get(DcMotor.class, "right_rear");
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
