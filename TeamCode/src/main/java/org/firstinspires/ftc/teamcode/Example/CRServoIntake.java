@@ -13,7 +13,7 @@ public class CRServoIntake extends LinearOpMode
     public void runOpMode() {
     leftIntake = hardwareMap.get(CRServo.class, "leftIntake");
     rightIntake = hardwareMap.get(CRServo.class, "rightIntake");
-        telemetry.addData(">", "Press Start to move Servo." );
+    telemetry.addData(">", "Press Start to move Servo." );
         telemetry.update();
         waitForStart();
 

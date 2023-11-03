@@ -40,6 +40,9 @@ public class  UniversalControlClass {
     int hopperDistance = 5;
     HuskyLens.Block[] blocks = huskyLens.blocks();
     double  grabberPosition = 0; // Start at minimum rotational position
+    int leftSpikeBound = 100;
+    int rightSpikeBound = 200;
+    int autoPosition;
     public static double grabPosition = 0.5;
     public static double dropPosition = 0;
 
@@ -102,19 +105,35 @@ public class  UniversalControlClass {
             opMode.telemetry.addData(">>", "Press start to continue");
         }
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
+        //TODO: is there anything we have to do to import model?
         opMode.telemetry.update();
     }
     public void DetectTeamArt() {
-        //TODO: JACOB detect team art location and set variable for location
+        //TODO: MADDIE/JACOB detect team art location and set variable for location
         HuskyLens.Block[] blocks = huskyLens.blocks();
         if (blocks.length <0){
             int xVal = blocks[0].x;
+            opMode.telemetry.addData("Team Art Detected: ", true);
+            opMode.telemetry.addData("Team Art X position: ", xVal);
             //x value ranges from left to right 0 to 320, with 160 being the center
             //create variables for x min/max values for each spike mark location 1,2,3
             //determine position and assign variable for drive in autonomous
+            if (xVal < leftSpikeBound){
+                autoPosition = 1;
+            }
+            else if ((xVal >= leftSpikeBound) && (xVal <= rightSpikeBound)){
+                autoPosition = 2;
+
+            }
+            else if (xVal > rightSpikeBound){
+                autoPosition = 3;
+            }
+            opMode.telemetry.addData("Auto position: ", autoPosition);
         }
         else{
             //pick a spot
+            opMode.telemetry.addData("!!Team Art NOT DETECTED!! ", "DEFAULT TO CENTER");
+            autoPosition = 2;
         }
     }
 
