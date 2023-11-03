@@ -50,6 +50,8 @@ public class  UniversalControlClass {
     public static final int SLIDE_MAX_HEIGHT = 500;
     public static final int SLIDE_MIN_HEIGHT = 0;
 
+    private double slidePower = 0.0;
+
     //TODO: Add any other specification variables
     public UniversalControlClass(boolean isDriverControl, boolean isFieldCentric, LinearOpMode opMode) {
         this.IsDriverControl = isDriverControl;
@@ -108,21 +110,20 @@ public class  UniversalControlClass {
     }
     public void SetSlidePower(double power){
         //TODO: CLAIRE slides up w/ limit switch
-        leftSlide.setPower(power);
-        rightSlide.setPower(power);
         if (SlideLimit.getState() == false && power < 0)
         {
-            leftSlide.setPower(0);
-            rightSlide.setPower(0);
+            slidePower = 0;
             leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         }
         else
         {
-            leftSlide.setPower(power);
-            rightSlide.setPower(power);
+            slidePower = power;
+
         }
+        leftSlide.setPower(slidePower);
+        rightSlide.setPower(slidePower);
 
     }
 
@@ -137,8 +138,9 @@ public class  UniversalControlClass {
 
     public void CheckForSlideLimit()
     {
-        if (SlideLimit.getState() == false)
+        if (SlideLimit.getState() == false && slidePower < 0)
         {
+            slidePower = 0;
             leftSlide.setPower(0);
             rightSlide.setPower(0);
             leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
