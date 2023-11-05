@@ -112,7 +112,7 @@ public class  UniversalControlClass {
 
     }
     public void SetSlidePower(double power){
-        //TODO: CLAIRE slides up w/ limit switch
+        //TODO: CLAIRE slides w/ limit switch
         if (SlideLimit.getState() == false && power < 0)
         {
             slidePower = 0;
