@@ -187,9 +187,9 @@ public final class MecanumDrive {
         // new motor names - based in parallel odometry pods 0 & 1 in encoder Ports 0 and 4,
         // perpendicular pod in either encoder Ports 1 or 2
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront_leftOdometry");     // Port 0
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront_centerOdometry"); // Port 1
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront_rightOdometry"); // Port 1
         leftBack = hardwareMap.get(DcMotorEx.class, "leftRear");                    // Port 2
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightRear_rightOdometry");// Port 3
+        rightBack = hardwareMap.get(DcMotorEx.class, "rightRear");// Port 3
 
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
