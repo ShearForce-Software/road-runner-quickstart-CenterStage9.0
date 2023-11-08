@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,9 @@ public class  UniversalControlClass {
     DcMotor leftRear;
     DcMotor rightFront;
     DcMotor rightRear;
+    DcMotor rightSlide;
+    DcMotor leftSlide;
+    DigitalChannel SlideLimit;
     CRServo intakeLeft;
     CRServo intakeRight;
     DistanceSensor leftHopper;
@@ -30,16 +34,27 @@ public class  UniversalControlClass {
     BNO055IMU imu;
     Servo   grabberServo1;
     RevBlinkinLedDriver.BlinkinPattern pattern;
+    RevBlinkinLedDriver blinkinLedDriverLeft;
+    RevBlinkinLedDriver blinkinLedDriverRight;
 
 
     //TODO: set universal variables (public static to make available in dashboard
     boolean IsDriverControl;
     boolean IsFieldCentric;
     int hopperDistance = 5;
-    HuskyLens.Block[] blocks = huskyLens.blocks();
+   // HuskyLens.Block[] blocks = huskyLens.blocks();
     double  grabberPosition = 0; // Start at minimum rotational position
+    int leftSpikeBound = 100;
+    int rightSpikeBound = 200;
+    int autoPosition;
     public static double grabPosition = 0.5;
     public static double dropPosition = 0;
+
+    public static final double SLIDE_POWER   = 0.50;
+    public static final int SLIDE_MAX_HEIGHT = 500;
+    public static final int SLIDE_MIN_HEIGHT = 0;
+
+    private double slidePower = 0.0;
 
     //TODO: Add any other specification variables
     public UniversalControlClass(boolean isDriverControl, boolean isFieldCentric, LinearOpMode opMode) {
@@ -50,22 +65,36 @@ public class  UniversalControlClass {
 
     public void Init (HardwareMap hardwareMap) {
         //TODO: hardware map all servos, motors, sensors, and cameras
-        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
-        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        leftFront = hardwareMap.get(DcMotor.class, "left_front");
+        leftRear = hardwareMap.get(DcMotor.class, "left_rear");
+        rightFront = hardwareMap.get(DcMotor.class, "right_front");
+        rightRear = hardwareMap.get(DcMotor.class, "right_rear");
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
+        rightSlide = hardwareMap.get(DcMotor.class, "right_slide");
+        leftSlide = hardwareMap.get(DcMotor.class, "left_slide");
+        SlideLimit = hardwareMap.get(DigitalChannel.class, "SlideLimit");
+
+
+        blinkinLedDriverLeft = hardwareMap.get(RevBlinkinLedDriver.class,"leftBlinkin");
+        blinkinLedDriverRight = hardwareMap.get(RevBlinkinLedDriver.class,"rightBlinkin");
+
+        blinkinLedDriverLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
+
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
+
+        SlideLimit.setMode(DigitalChannel.Mode.INPUT);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+
     }
 
     public void ServoIntake() {
@@ -82,15 +111,89 @@ public class  UniversalControlClass {
 
     public void SlidesUp(){
         //TODO: CLAIRE slides up w/ limit switch
+        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
+        rightSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
+        SetSlidePower(SLIDE_POWER);
+
+    }
+    public void SetSlidePower(double power){
+        //TODO: CLAIRE slides w/ limit switch
+        if (SlideLimit.getState() == false && power < 0)
+        {
+            slidePower = 0;
+            leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        }
+        else
+        {
+            slidePower = power;
+
+        }
+        leftSlide.setPower(slidePower);
+        rightSlide.setPower(slidePower);
+
     }
 
     public void SlidesDown() {
         //TODO: CLAIRE slides down w/ limit switch
+        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
+        rightSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
+        SetSlidePower(-1*SLIDE_POWER);
+    }
+
+    public void CheckForSlideLimit()
+    {
+        if (SlideLimit.getState() == false && slidePower < 0)
+        {
+            slidePower = 0;
+            leftSlide.setPower(0);
+            rightSlide.setPower(0);
+            leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        }
+
     }
 
     public void LightControl() {
-        //TODO: AIDAN Blinkin module with color detection
     }
+        //TODO: AIDAN Blinkin module with color detection
+        public void SetLeftToColor(int number, int side)
+        {
+            switch (number)
+            {
+
+                case 1:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+                    break;
+                case 2:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+                    break;
+                case 3:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+                    break;
+                case 4:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+                    break;
+                default:
+                    pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+                    break;
+            }
+            if (side ==1)
+            {
+                blinkinLedDriverLeft.setPattern(pattern);
+            }
+            else
+            {
+                blinkinLedDriverRight.setPattern(pattern);
+            }
+        }
+
     public void HuskyLensInit(){
         if (!huskyLens.knock()) {
             opMode.telemetry.addData(">>", "Problem communicating with " + huskyLens.getDeviceName());
@@ -98,19 +201,35 @@ public class  UniversalControlClass {
             opMode.telemetry.addData(">>", "Press start to continue");
         }
         huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_TRACKING);
+        //TODO: is there anything we have to do to import model?
         opMode.telemetry.update();
     }
     public void DetectTeamArt() {
-        //TODO: JACOB detect team art location and set variable for location
+        //TODO: MADDIE/JACOB detect team art location and set variable for location
         HuskyLens.Block[] blocks = huskyLens.blocks();
         if (blocks.length <0){
             int xVal = blocks[0].x;
+            opMode.telemetry.addData("Team Art Detected: ", true);
+            opMode.telemetry.addData("Team Art X position: ", xVal);
             //x value ranges from left to right 0 to 320, with 160 being the center
             //create variables for x min/max values for each spike mark location 1,2,3
             //determine position and assign variable for drive in autonomous
+            if (xVal < leftSpikeBound){
+                autoPosition = 1;
+            }
+            else if ((xVal >= leftSpikeBound) && (xVal <= rightSpikeBound)){
+                autoPosition = 2;
+
+            }
+            else if (xVal > rightSpikeBound){
+                autoPosition = 3;
+            }
+            opMode.telemetry.addData("Auto position: ", autoPosition);
         }
         else{
             //pick a spot
+            opMode.telemetry.addData("!!Team Art NOT DETECTED!! ", "DEFAULT TO CENTER");
+            autoPosition = 2;
         }
     }
 
