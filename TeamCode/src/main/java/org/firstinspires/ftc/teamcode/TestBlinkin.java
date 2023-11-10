@@ -17,13 +17,15 @@ public class TestBlinkin extends LinearOpMode
     @Override
     public void runOpMode() {
         theRobot.Init(this.hardwareMap);
-        theRobot.SetLeftToColor(1, 1);
+        //theRobot.SetLeftToColor(1, 1);
         telemetry.update();
         waitForStart();
 
 
         // Scan servo till stop pressed.
-        while(opModeIsActive()){
+        while(opModeIsActive())
+
+        {
 
             // Set the contServo direction and power; // Intaking
             // When a button is hit, select a color
@@ -36,10 +38,10 @@ public class TestBlinkin extends LinearOpMode
                 theRobot.SetLeftToColor(3,1);
             }
             //idle();
-        }
         // Display the current value
         telemetry.addData(">", "Press Stop to end test." );
         telemetry.update();
+        }
 
     }
 
