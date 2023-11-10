@@ -7,7 +7,6 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -19,12 +18,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.acmerobotics.dashboard.config.Config;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-@Disabled
-//@TeleOp(name="TestOpMode", group="Linear OpMode")
-public class TestOpMode extends UniversalControlClass {
-    double y = opMode.gamepad2.left_stick_y;
-    double x = -opMode.gamepad2.left_stick_x * 1.1;
-    double rx = opMode.gamepad2.right_stick_x;
+
+@TeleOp(name="TestOpMode", group="Linear OpMode")
+public class TestOpMode extends LinearOpMode {
+    double y = gamepad2.left_stick_y;
+    double x = -gamepad2.left_stick_x * 1.1;
+    double rx = gamepad2.right_stick_x;
     DcMotor leftFront;
     DcMotor leftRear;
     DcMotor rightFront;
@@ -32,9 +31,9 @@ public class TestOpMode extends UniversalControlClass {
     DcMotor rightSlide;
     DcMotor leftSlide;
 
-    public TestOpMode(boolean isDriverControl, boolean isFieldCentric, LinearOpMode opMode) {
-        super(isDriverControl, isFieldCentric, opMode);
-    }
+//    public TestOpMode(boolean isDriverControl, boolean isFieldCentric, LinearOpMode opMode) {
+//        super(isDriverControl, isFieldCentric, opMode);
+//    }
 
     public void runOpMode(){
         leftFront  = hardwareMap.get(DcMotor.class, "left_front");
@@ -58,12 +57,12 @@ public class TestOpMode extends UniversalControlClass {
         leftRear.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.update();
-        opMode.waitForStart();
+        waitForStart();
 
-        while (opMode.opModeIsActive()) {
-            double y = opMode.gamepad2.left_stick_y;
-            double x = -opMode.gamepad2.left_stick_x * 1.1;
-            double rx = opMode.gamepad2.right_stick_x;
+        while (opModeIsActive()) {
+            double y = gamepad2.left_stick_y;
+            double x = -gamepad2.left_stick_x * 1.1;
+            double rx = gamepad2.right_stick_x;
         }
     }
 }
