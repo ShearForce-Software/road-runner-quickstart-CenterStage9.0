@@ -68,7 +68,7 @@ public class  UniversalControlClass {
     }
 
     public void Init (HardwareMap hardwareMap) {
-       /* //TODO: hardware map all servos, motors, sensors, and cameras
+        //TODO: hardware map all servos, motors, sensors, and cameras
         leftFront = hardwareMap.get(DcMotor.class, "leftFront_leftOdometry");
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront_rightOdometry");
@@ -79,13 +79,13 @@ public class  UniversalControlClass {
         rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
         leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
         SlideLimit = hardwareMap.get(DigitalChannel.class, "SlideLimit");
-*/
+
         blinkinLedDriverLeft = hardwareMap.get(RevBlinkinLedDriver.class,"leftBlinkin");
         blinkinLedDriverRight = hardwareMap.get(RevBlinkinLedDriver.class,"rightBlinkin");
 
         blinkinLedDriverLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
-        leftColorSensor = hardwareMap.get(RevColorSensorV3.class, "ColorSensorLeft");
-     /*   //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
+
+        //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
         rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -97,8 +97,6 @@ public class  UniversalControlClass {
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-
-      */
     }
 
     public void ServoIntake() {
@@ -165,13 +163,13 @@ public class  UniversalControlClass {
 //            leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //            rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        }
-//    }q
+//    }
 
     public void ColorDetect(){
         double leftColor = leftColorSensor.getLightDetected();
-       // double rightColor = rightColorSensor.getLightDetected();
+        double rightColor = rightColorSensor.getLightDetected();
         opMode.telemetry.addData("leftColor: ", leftColor);
-       // opMode.telemetry.addData("rightColor: ", rightColor);
+        opMode.telemetry.addData("rightColor: ", rightColor);
     }
     public void LightControl() {
     }
@@ -291,7 +289,7 @@ public class  UniversalControlClass {
         public void Show_Blinkin_Telemetry()
         {
             opMode.telemetry.addData("Blinkin Left: ", Blinken_left_pattern.toString());
-          //  opMode.telemetry.addData("Blinkin Right: ", Blinken_right_pattern.toString());
+            opMode.telemetry.addData("Blinkin Right: ", Blinken_right_pattern.toString());
         }
     public void HuskyLensInit(){
         if (!huskyLens.knock()) {
