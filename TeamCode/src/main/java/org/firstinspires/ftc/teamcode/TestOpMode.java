@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -21,48 +22,38 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp(name="TestOpMode", group="Linear OpMode")
 public class TestOpMode extends LinearOpMode {
-    double y = gamepad2.left_stick_y;
-    double x = -gamepad2.left_stick_x * 1.1;
-    double rx = gamepad2.right_stick_x;
-    DcMotor leftFront;
-    DcMotor leftRear;
-    DcMotor rightFront;
-    DcMotor rightRear;
-    DcMotor rightSlide;
-    DcMotor leftSlide;
-
-//    public TestOpMode(boolean isDriverControl, boolean isFieldCentric, LinearOpMode opMode) {
-//        super(isDriverControl, isFieldCentric, opMode);
-//    }
-
+    UniversalControlClass control = new UniversalControlClass(true, false, this);
     public void runOpMode(){
-        leftFront  = hardwareMap.get(DcMotor.class, "left_front");
-        leftRear  = hardwareMap.get(DcMotor.class, "left_rear");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        rightRear = hardwareMap.get(DcMotor.class, "right_rear");
-
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
-
-        leftFront.setPower(frontLeftPower);
-        leftRear.setPower(backLeftPower);
-        rightFront.setPower(frontRightPower);
-        rightRear.setPower(backRightPower);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
-        rightRear.setDirection(DcMotor.Direction.FORWARD);
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftRear.setDirection(DcMotor.Direction.REVERSE);
+        control.Init(hardwareMap);
+        control.HuskyLensInit();
 
         telemetry.update();
         waitForStart();
 
         while (opModeIsActive()) {
-            double y = gamepad2.left_stick_y;
-            double x = -gamepad2.left_stick_x * 1.1;
-            double rx = gamepad2.right_stick_x;
+            control.driveControlsRobotCentric();
+
+            if (gamepad1.dpad_up){
+                control.SlidesUp();
+            }
+            else if (gamepad1.dpad_down){
+                control.SlidesDown();
+            }
+            else{
+                control.rightSlide.setPower(0);
+                control.leftSlide.setPower(0);
+            }
+
+            if (gamepad1.right_bumper){
+                control.ServoIntake();
+            }
+            else if (gamepad1.left_bumper){
+                control.ServoOuttake();
+            }
+            else{
+                control.intakeRight.setPower(0);
+                control.intakeLeft.setPower(0);
+            }
         }
     }
 }

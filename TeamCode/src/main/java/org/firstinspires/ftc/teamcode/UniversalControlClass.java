@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -42,7 +43,6 @@ public class  UniversalControlClass {
     boolean IsDriverControl;
     boolean IsFieldCentric;
     int hopperDistance = 5;
-   // HuskyLens.Block[] blocks = huskyLens.blocks();
     double  grabberPosition = 0; // Start at minimum rotational position
     int leftSpikeBound = 100;
     int rightSpikeBound = 200;
@@ -65,15 +65,15 @@ public class  UniversalControlClass {
 
     public void Init (HardwareMap hardwareMap) {
         //TODO: hardware map all servos, motors, sensors, and cameras
-        leftFront = hardwareMap.get(DcMotor.class, "left_front");
-        leftRear = hardwareMap.get(DcMotor.class, "left_rear");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        rightRear = hardwareMap.get(DcMotor.class, "right_rear");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront_leftOdometry");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront_rightOdometry");
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
-        grabberServo1 = hardwareMap.get(Servo.class, "servo_name");
-        rightSlide = hardwareMap.get(DcMotor.class, "right_slide");
-        leftSlide = hardwareMap.get(DcMotor.class, "left_slide");
+        grabberServo1 = hardwareMap.get(Servo.class, "grabber");
+        rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
+        leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
         SlideLimit = hardwareMap.get(DigitalChannel.class, "SlideLimit");
 
 
@@ -85,6 +85,8 @@ public class  UniversalControlClass {
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
+        rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         SlideLimit.setMode(DigitalChannel.Mode.INPUT);
 
@@ -92,17 +94,23 @@ public class  UniversalControlClass {
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-
-
-
     }
 
     public void ServoIntake() {
-        // TODO: AIDAN continuous rotation servo intake
+        intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeRight.setPower(1.0);
+        intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeLeft.setPower(1.0);
+    }
+    public void ServoOuttake() {
+        intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeRight.setPower(-1);
+        intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeLeft.setPower(-1);
     }
 
     public void IntakeDistanceStop() {
-        //TODO: JACOB stop intake servos when distance
+        //TODO: JACOB Find hopper distance
         if((leftHopper.getDistance(DistanceUnit.MM) < hopperDistance) && (rightHopper.getDistance(DistanceUnit.MM) < hopperDistance)){
             intakeLeft.setPower(0);
             intakeRight.setPower(0);
@@ -110,55 +118,51 @@ public class  UniversalControlClass {
     }
 
     public void SlidesUp(){
-        //TODO: CLAIRE slides up w/ limit switch
+        //TODO: CLAIRE find SLIDE_MAX_HEIGHT
         leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
         rightSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
         SetSlidePower(SLIDE_POWER);
-
     }
-    public void SetSlidePower(double power){
-        //TODO: CLAIRE slides w/ limit switch
-        if (SlideLimit.getState() == false && power < 0)
-        {
-            slidePower = 0;
-            leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        }
-        else
-        {
-            slidePower = power;
-
-        }
-        leftSlide.setPower(slidePower);
-        rightSlide.setPower(slidePower);
-
-    }
-
     public void SlidesDown() {
-        //TODO: CLAIRE slides down w/ limit switch
+        //TODO: CLAIRE find SLIDE_MIN_HEIGHT
         leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
         rightSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
         SetSlidePower(-1*SLIDE_POWER);
     }
-
-    public void CheckForSlideLimit()
-    {
-        if (SlideLimit.getState() == false && slidePower < 0)
+    private void SetSlidePower(double power){
+        //TODO: CLAIRE slides w/ limit switch
+        if (SlideLimit.getState() == true && power > 0)
         {
             slidePower = 0;
-            leftSlide.setPower(0);
-            rightSlide.setPower(0);
             leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         }
-
+        else
+        {
+            slidePower = power;
+        }
+        leftSlide.setPower(slidePower);
+        rightSlide.setPower(slidePower);
     }
+
+//    CLAIRE- it seems like this method is unused? you check the slide limit in the SetSlidePower method.
+//    public void CheckForSlideLimit()
+//    {
+//        if (SlideLimit.getState() == false && slidePower < 0)
+//        {
+//            slidePower = 0;
+//            leftSlide.setPower(0);
+//            rightSlide.setPower(0);
+//            leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//        }
+//
+//    }
 
     public void LightControl() {
     }
@@ -167,7 +171,6 @@ public class  UniversalControlClass {
         {
             switch (number)
             {
-
                 case 1:
                     pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
                     break;
@@ -184,7 +187,7 @@ public class  UniversalControlClass {
                     pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
                     break;
             }
-            if (side ==1)
+            if (side == 1)
             {
                 blinkinLedDriverLeft.setPattern(pattern);
             }
@@ -241,27 +244,23 @@ public class  UniversalControlClass {
         //TODO: UNASSIGNED Hang from bar
     }
 
-    public void TransferDeliver() {
-        //TODO: CLAIRE grab, rotate, drop mechanism for outtake
-        //theoretical transfer for now, just worry about open and close servos for grab and drop
-        //close servo to grab
-        setGrabberPosition(grabPosition);
-        //TODO rotate something
-        //open servo to drop
-        setGrabberPosition(dropPosition);
-    }
-    public void setGrabberPosition (double position)
-    {
-        grabberPosition = position;
-        grabberServo1.setPosition(grabberPosition);
-    }
-
-    public void printGrabberPosition ()
-    {
-        // Display the current value
-        opMode.telemetry.addData("Grabber Position", "%5.2f", grabberPosition);
-        opMode.telemetry.update();
-    }
+//    DISABLED FOR NOW, SO ROBOT WON'T BE MAD
+//    public void TransferDeliver() {
+//        //TODO: CLAIRE grab, rotate, drop mechanism for outtake
+//        //theoretical transfer for now, just worry about open and close servos for grab and drop
+//        //close servo to grab
+//        setGrabberPosition(grabPosition);
+//        //TODO rotate something
+//        //open servo to drop
+//        setGrabberPosition(dropPosition);
+//    }
+//    public void setGrabberPosition (double position)
+//    {
+//        grabberPosition = position;
+//        grabberServo1.setPosition(grabberPosition);
+//        opMode.telemetry.addData("Grabber Position", "%5.2f", grabberPosition);
+//        opMode.telemetry.update();
+//    }
 
     public void driveControlsRobotCentric() {
         double y = opMode.gamepad2.left_stick_y;
