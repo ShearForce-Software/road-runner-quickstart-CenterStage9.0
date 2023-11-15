@@ -166,10 +166,10 @@ public class  UniversalControlClass {
 //    }
 
     public void ColorDetect(){
-        double leftColor = leftColorSensor.getLightDetected();
-        double rightColor = rightColorSensor.getLightDetected();
+        double leftColor = leftColorSensor.getNormalizedColors().toColor();
+        //double rightColor = rightColorSensor.getLightDetected();
         opMode.telemetry.addData("leftColor: ", leftColor);
-        opMode.telemetry.addData("rightColor: ", rightColor);
+        //opMode.telemetry.addData("rightColor: ", rightColor);
     }
     public void LightControl() {
     }
