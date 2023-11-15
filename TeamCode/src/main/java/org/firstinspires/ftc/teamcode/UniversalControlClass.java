@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -31,6 +32,8 @@ public class  UniversalControlClass {
     CRServo intakeRight;
     DistanceSensor leftHopper;
     DistanceSensor rightHopper;
+    RevColorSensorV3 leftColorSensor;
+    RevColorSensorV3 rightColorSensor;
     HuskyLens huskyLens;
     BNO055IMU imu;
     Servo   grabberServo1;
@@ -76,7 +79,6 @@ public class  UniversalControlClass {
         rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
         leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
         SlideLimit = hardwareMap.get(DigitalChannel.class, "SlideLimit");
-
 
         blinkinLedDriverLeft = hardwareMap.get(RevBlinkinLedDriver.class,"leftBlinkin");
         blinkinLedDriverRight = hardwareMap.get(RevBlinkinLedDriver.class,"rightBlinkin");
@@ -160,11 +162,15 @@ public class  UniversalControlClass {
 //            rightSlide.setPower(0);
 //            leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //            rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
 //        }
-//
 //    }
 
+    public void ColorDetect(){
+        double leftColor = leftColorSensor.getLightDetected();
+        double rightColor = rightColorSensor.getLightDetected();
+        opMode.telemetry.addData("leftColor: ", leftColor);
+        opMode.telemetry.addData("rightColor: ", rightColor);
+    }
     public void LightControl() {
     }
         //TODO: AIDAN Blinkin module with color detection

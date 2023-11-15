@@ -54,6 +54,8 @@ public class TestOpMode extends LinearOpMode {
                 control.intakeRight.setPower(0);
                 control.intakeLeft.setPower(0);
             }
+            telemetry.addData("Dpad Up = Slides Up", ", Dpad Down = Slides Down");
+            telemetry.addData("Right Bumper = Spin In", ", Left Bumper = Spin Out");
         }
     }
 }
