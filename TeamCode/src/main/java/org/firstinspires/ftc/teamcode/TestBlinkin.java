@@ -26,7 +26,7 @@ public class TestBlinkin extends LinearOpMode
         while(opModeIsActive())
 
         {
-
+            theRobot.ColorDetect();
             // Set the contServo direction and power; // Intaking
             // When a button is hit, select a color
             if (gamepad1.a == true)
