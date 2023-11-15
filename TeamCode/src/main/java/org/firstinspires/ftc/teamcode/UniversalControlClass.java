@@ -34,7 +34,8 @@ public class  UniversalControlClass {
     HuskyLens huskyLens;
     BNO055IMU imu;
     Servo   grabberServo1;
-    RevBlinkinLedDriver.BlinkinPattern pattern;
+    RevBlinkinLedDriver.BlinkinPattern Blinken_left_pattern;
+    RevBlinkinLedDriver.BlinkinPattern Blinken_right_pattern;
     RevBlinkinLedDriver blinkinLedDriverLeft;
     RevBlinkinLedDriver blinkinLedDriverRight;
 
@@ -169,6 +170,7 @@ public class  UniversalControlClass {
         //TODO: AIDAN Blinkin module with color detection
         public void SetLeftToColor(int number, int side)
         {
+            RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
             switch (number)
             {
                 case 1:
@@ -189,14 +191,100 @@ public class  UniversalControlClass {
             }
             if (side == 1)
             {
-                blinkinLedDriverLeft.setPattern(pattern);
+                Blinken_left_pattern= pattern;
+                blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
             }
             else
             {
-                blinkinLedDriverRight.setPattern(pattern);
+                Blinken_right_pattern = pattern;
+                blinkinLedDriverRight.setPattern(Blinken_right_pattern);
             }
         }
-
+        public void Set_Blinkin_Left_Green()
+        {
+            Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+            blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+        }
+    public void Set_Blinkin_Right_Green()
+    {
+        Blinken_right_pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+        blinkinLedDriverRight.setPattern(Blinken_right_pattern);
+    }
+    public void Set_Blinkin_Left_Violet()
+    {
+        Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+        blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+    }
+    public void Set_Blinkin_Right_Violet()
+    {
+        Blinken_right_pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
+        blinkinLedDriverRight.setPattern(Blinken_right_pattern);
+    }
+    public void Set_Blinkin_Left_Yellow()
+    {
+        Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+        blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+    }
+    public void Set_Blinkin_Right_Yellow()
+    {
+        Blinken_right_pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+        blinkinLedDriverRight.setPattern(Blinken_right_pattern);
+    }
+    public void Set_Blinkin_Left_White()
+    {
+        Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+        blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+    }
+    public void Set_Blinkin_Right_White()
+    {
+        Blinken_right_pattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
+        blinkinLedDriverRight.setPattern(Blinken_right_pattern);
+    }
+    public void Set_Blinkin_Left_Black()
+    {
+        Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+        blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+    }
+    public void Set_Blinkin_Right_Black()
+    {
+        Blinken_right_pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
+        blinkinLedDriverRight.setPattern(Blinken_right_pattern);
+    }
+    public void Set_Blinkin_Left_Red()
+    {
+        Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+        blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+    }
+    public void Set_Blinkin_Right_Red()
+    {
+        Blinken_right_pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+        blinkinLedDriverRight.setPattern(Blinken_right_pattern);
+    }
+    public void Set_Blinkin_Left_Blue()
+    {
+        Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
+        blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+    }
+    public void Set_Blinkin_Right_Blue()
+    {
+        Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
+        blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+    }
+    public void Set_Blinkin_Left_ShearForce()
+    {
+        Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
+        blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
+    }
+    public void Set_Blinkin_Right_ShearForce()
+    {
+        Blinken_right_pattern = RevBlinkinLedDriver.BlinkinPattern.COLOR_WAVES_FOREST_PALETTE;
+        blinkinLedDriverRight.setPattern(Blinken_right_pattern);
+    }
+        public void Show_Blinkin_Telemetry()
+        {
+            opMode.telemetry.addData("Blinkin Left: ", Blinken_left_pattern.toString());
+            opMode.telemetry.addData("Blinkin Right: ", Blinken_right_pattern.toString());
+        }
     public void HuskyLensInit(){
         if (!huskyLens.knock()) {
             opMode.telemetry.addData(">>", "Problem communicating with " + huskyLens.getDeviceName());

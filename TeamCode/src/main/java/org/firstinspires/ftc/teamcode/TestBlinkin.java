@@ -31,7 +31,7 @@ public class TestBlinkin extends LinearOpMode
             // When a button is hit, select a color
             if (gamepad1.a == true)
             {
-                theRobot.SetLeftToColor(2, 1);
+                theRobot.Set_Blinkin_Left_Green();
             }
             else
             {
@@ -39,6 +39,7 @@ public class TestBlinkin extends LinearOpMode
             }
             //idle();
         // Display the current value
+            theRobot.Show_Blinkin_Telemetry();
         telemetry.addData(">", "Press Stop to end test." );
         telemetry.update();
         }
