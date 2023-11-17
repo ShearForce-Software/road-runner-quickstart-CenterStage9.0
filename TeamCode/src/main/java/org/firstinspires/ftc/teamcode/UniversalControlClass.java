@@ -79,11 +79,9 @@ public class  UniversalControlClass {
         rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
         leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
         SlideLimit = hardwareMap.get(DigitalChannel.class, "SlideLimit");
+        InitBlinkin(hardwareMap);
 
-        blinkinLedDriverLeft = hardwareMap.get(RevBlinkinLedDriver.class,"leftBlinkin");
-        blinkinLedDriverRight = hardwareMap.get(RevBlinkinLedDriver.class,"rightBlinkin");
 
-        blinkinLedDriverLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
@@ -99,16 +97,24 @@ public class  UniversalControlClass {
         imu.initialize(parameters);
     }
 
+    public void InitBlinkin(HardwareMap hardwareMap) {
+        blinkinLedDriverLeft = hardwareMap.get(RevBlinkinLedDriver.class,"leftBlinkin");
+        blinkinLedDriverRight = hardwareMap.get(RevBlinkinLedDriver.class,"rightBlinkin");
+        leftColorSensor = hardwareMap.get(RevColorSensorV3.class, "ColorSensorLeft");
+
+        blinkinLedDriverLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
+    }
+
     public void ServoIntake() {
-        intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeRight.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeRight.setPower(1.0);
-        intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeLeft.setPower(1.0);
     }
     public void ServoOuttake() {
-        intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeRight.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeRight.setPower(-1);
-        intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeLeft.setPower(-1);
     }
 
@@ -166,46 +172,75 @@ public class  UniversalControlClass {
 //    }
 
     public void ColorDetect(){
-        double leftColor = leftColorSensor.getNormalizedColors().toColor();
+
         //double rightColor = rightColorSensor.getLightDetected();
-        opMode.telemetry.addData("leftColor: ", leftColor);
+
+    }
+    public void showColorSensorTelemetry(){
+        int leftColor = leftColorSensor.getNormalizedColors().toColor();
+        opMode.telemetry.addData("leftColorNorm: ", leftColor);
+        opMode.telemetry.addData("leftColor(red): ", leftColorSensor.red());
+        opMode.telemetry.addData("leftColor(green): ", leftColorSensor.green());
+        opMode.telemetry.addData("leftColor(blue): ", leftColorSensor.blue());
         //opMode.telemetry.addData("rightColor: ", rightColor);
-    }
-    public void LightControl() {
-    }
-        //TODO: AIDAN Blinkin module with color detection
-        public void SetLeftToColor(int number, int side)
-        {
-            RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
-            switch (number)
-            {
-                case 1:
-                    pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
-                    break;
-                case 2:
-                    pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
-                    break;
-                case 3:
-                    pattern = RevBlinkinLedDriver.BlinkinPattern.VIOLET;
-                    break;
-                case 4:
-                    pattern = RevBlinkinLedDriver.BlinkinPattern.WHITE;
-                    break;
-                default:
-                    pattern = RevBlinkinLedDriver.BlinkinPattern.BLACK;
-                    break;
-            }
-            if (side == 1)
-            {
-                Blinken_left_pattern= pattern;
-                blinkinLedDriverLeft.setPattern(Blinken_left_pattern);
-            }
-            else
-            {
-                Blinken_right_pattern = pattern;
-                blinkinLedDriverRight.setPattern(Blinken_right_pattern);
-            }
+        opMode.telemetry.addData("leftColorNorm(red): ", leftColorSensor.getNormalizedColors().red);
+        opMode.telemetry.addData("leftColorNorm(green): ", leftColorSensor.getNormalizedColors().green);
+        opMode.telemetry.addData("leftColorNorm(blue): ", leftColorSensor.getNormalizedColors().blue);
+        int red = leftColorSensor.red();
+        int green = leftColorSensor.green();
+        int blue = leftColorSensor.blue();
+        // Check for White Pixel
+        if(red < 4000 && red > 1000 && green < 6000 && green > 3000 && blue < 7000 && blue > 3000) {
+            opMode.telemetry.addData("Left: ", "is white");
         }
+        // Check for yellow pixel
+        else if(red < 2500 && red > 1000 && green < 3500 && green > 1500 && blue < 1000 && blue >0 )
+        {
+            opMode.telemetry.addData("Left: ", "is yellow");
+        }
+        // Check for green pixel
+        else if(red < 1000 && red > 0 && green < 6000 && green > 1500 && blue < 1000 && blue >0 )
+        {
+            opMode.telemetry.addData("Left: ", "is green");
+        }
+        // Check for purple pixel
+        else if(red < 3500 && red > 1000 && green < 4000 && green > 2000 && blue < 7000 && blue > 3500 )
+        {
+            opMode.telemetry.addData("Left: ", "is purple");
+        }
+        else {
+            opMode.telemetry.addData("Left: ", "unknown");
+        }
+    }
+    public void SetBlinkinToPixelColor()
+    {
+        int red = leftColorSensor.red();
+        int green = leftColorSensor.green();
+        int blue = leftColorSensor.blue();
+        // Check for White Pixel
+        if(red < 4000 && red > 1000 && green < 6000 && green > 3000 && blue < 7000 && blue > 3000) {
+           Set_Blinkin_Left_White();
+        }
+        // Check for yellow pixel
+        else if(red < 2500 && red > 1000 && green < 3500 && green > 1500 && blue < 1000 && blue >0 )
+        {
+            Set_Blinkin_Left_Yellow();
+        }
+        // Check for green pixel
+        else if(red < 1000 && red > 0 && green < 6000 && green > 1500 && blue < 1000 && blue >0 )
+        {
+            Set_Blinkin_Left_Green();
+        }
+        // Check for purple pixel
+        else if(red < 3500 && red > 1000 && green < 4000 && green > 2000 && blue < 7000 && blue > 3500 )
+        {
+            Set_Blinkin_Left_Violet();
+        }
+        else {
+            Set_Blinkin_Left_Black();
+        }
+    }
+
         public void Set_Blinkin_Left_Green()
         {
             Blinken_left_pattern = RevBlinkinLedDriver.BlinkinPattern.GREEN;
@@ -289,7 +324,7 @@ public class  UniversalControlClass {
         public void Show_Blinkin_Telemetry()
         {
             opMode.telemetry.addData("Blinkin Left: ", Blinken_left_pattern.toString());
-            opMode.telemetry.addData("Blinkin Right: ", Blinken_right_pattern.toString());
+           // opMode.telemetry.addData("Blinkin Right: ", Blinken_right_pattern.toString());
         }
     public void HuskyLensInit(){
         if (!huskyLens.knock()) {

@@ -16,7 +16,7 @@ public class TestBlinkin extends LinearOpMode
     @SuppressLint("SuspiciousIndentation")
     @Override
     public void runOpMode() {
-        theRobot.Init(this.hardwareMap);
+        theRobot.InitBlinkin(this.hardwareMap);
         //theRobot.SetLeftToColor(1, 1);
         telemetry.update();
         waitForStart();
@@ -26,17 +26,19 @@ public class TestBlinkin extends LinearOpMode
         while(opModeIsActive())
 
         {
+            theRobot.showColorSensorTelemetry();
 
             // Set the contServo direction and power; // Intaking
             // When a button is hit, select a color
             if (gamepad1.a == true)
             {
-                theRobot.Set_Blinkin_Left_Green();
+               // theRobot.Set_Blinkin_Left_Green();
             }
             else
             {
-                theRobot.SetLeftToColor(3,1);
+               // theRobot.SetLeftToColor(3,1);
             }
+            theRobot.SetBlinkinToPixelColor();
             //idle();
         // Display the current value
             theRobot.Show_Blinkin_Telemetry();
