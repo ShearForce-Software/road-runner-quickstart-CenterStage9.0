@@ -346,7 +346,7 @@ public class  UniversalControlClass {
     public void DetectTeamArt() {
         //TODO: MADDIE/JACOB detect team art location and set variable for location
         HuskyLens.Block[] blocks = huskyLens.blocks();
-        if (blocks.length <0){
+        if (blocks.length > 0){
             int xVal = blocks[0].x;
             opMode.telemetry.addData("Team Art Detected: ", true);
             opMode.telemetry.addData("Team Art X position: ", xVal);

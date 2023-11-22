@@ -137,7 +137,7 @@ public class ConceptHuskyLens extends LinearOpMode {
              * Returns an empty array if no objects are seen.
              */
             HuskyLens.Block[] blocks = huskyLens.blocks();
-            if (blocks.length <0){
+            if (blocks.length > 0){
                 int xVal = blocks[0].x;
                 telemetry.addData("Team Art Detected: ", true);
                 telemetry.addData("Team Art X position: ", xVal);
