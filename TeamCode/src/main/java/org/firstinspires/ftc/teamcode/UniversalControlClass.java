@@ -363,6 +363,11 @@ public class  UniversalControlClass {
             else if (xVal > rightSpikeBound){
                 autoPosition = 3;
             }
+            else
+            {
+                opMode.telemetry.addData("Husky Lens code wrong, default to ", 2);
+                autoPosition = 2;
+            }
             opMode.telemetry.addData("Auto position: ", autoPosition);
         }
         else{
