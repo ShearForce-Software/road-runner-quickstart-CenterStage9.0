@@ -62,7 +62,7 @@ public class ConceptHuskyLens extends LinearOpMode {
     private final int READ_PERIOD = 1;
     int leftSpikeBound = 100;
     int rightSpikeBound = 200;
-    int autoPosition;
+    int autoPosition = 0;
 
     private HuskyLens huskyLens;
 
@@ -153,6 +153,11 @@ public class ConceptHuskyLens extends LinearOpMode {
                 }
                 else if (xVal > rightSpikeBound){
                     autoPosition = 3;
+                }
+                else
+                {
+                    telemetry.addData("Husky Lens code wrong, default to ", 2);
+                    autoPosition = 2;
                 }
                 telemetry.addData("Auto position: ", autoPosition);
             }
