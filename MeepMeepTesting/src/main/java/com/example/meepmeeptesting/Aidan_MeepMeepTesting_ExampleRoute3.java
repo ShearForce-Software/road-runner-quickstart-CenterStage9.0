@@ -48,7 +48,7 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 // Approach to pixel stack
                 .setTangent(180)
                 .splineToConstantHeading(new Vector2d(-60, 12), Math.toRadians(180))
-                      //  .waitSeconds(10)
+                //  .waitSeconds(10)
 
                 // Drive across field toward backdrop
 
@@ -57,32 +57,32 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
                 //commented until 1st meet ends
                 // back to stack
-             //   .setReversed(false)
-               // .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
-             //   .splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+                //   .setReversed(false)
+                // .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
+                //   .splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
                 //commented until 1st meet ends
-               // to backboard and then to stack
-              //  .setReversed(true)
-            //    .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
-               // .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
-              //  .build());
-       /* try
-        {
-            Thread.sleep(2000);
-        }
-        catch(InterruptedException ex)
-        {
-            Thread.currentThread().interrupt();
-        }
-        */
+                // to backboard and then to stack
+                //  .setReversed(true)
+                //    .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
+                // .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
+                //  .build());
+                /* try
+                 {
+                     Thread.sleep(2000);
+                 }
+                 catch(InterruptedException ex)
+                 {
+                     Thread.currentThread().interrupt();
+                 }
+                 */
                 //commented until 1st meet ends
-               // .setReversed(false)
+                // .setReversed(false)
                 //.splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
                 //.splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
 
                 // manuever to drive under rigging back to backboard then back to stack
                 //commented until 1st meet ends
-               // .setReversed(true)
+                // .setReversed(true)
                 //.splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
                 //.splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
 /*
@@ -107,21 +107,16 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 .splineToConstantHeading(new Vector2d(48, 12), Math.toRadians(-90))
                 .splineToLinearHeading(new Pose2d(63, 12, Math.toRadians(180)), Math.toRadians(0))
 
-                        .build());
+                .build());
 
-
-        Image img = null;
-       try { img = ImageIO.read(new File("C:\\Users\\shear\\field-2023-juice-dark.png")); }
-        catch (IOException e) {}
-
-        meepMeep.setBackground(img)
-               .setDarkMode(true)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
+                .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
                 .start();
-
-
-      /*  public void spikeMark()
+    }
+}
+      /*public void spikeMark()
         {
             //Use cameras and find the correct location for the team art object
             //Release team art onto the correct line
@@ -150,12 +145,8 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
         {
             // Code the sensors to stop moving after the robot has two pixels
         }
-      /*  meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL)
-                .setDarkMode(true)
-                .setBackgroundAlpha(0.95f)
-                .addEntity(myBot)
-                .start();
         */
 
-    }
-}
+
+
+
