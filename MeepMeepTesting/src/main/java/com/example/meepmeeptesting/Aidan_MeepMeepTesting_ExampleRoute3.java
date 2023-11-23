@@ -31,11 +31,14 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 .setDimensions(17, 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-36, 60, Math.toRadians(-90)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-36, 60
+
+                        , Math.toRadians(-90)))
 
                 // https://rr.brott.dev/docs/v1-0/builder-ref/  Reference for trajectory segments
 
                 // move to spike box
+                //62.5 38.5
                 .splineTo(new Vector2d(-36, 36), Math.toRadians(180))
 
                 //backout and maneuver for pixel stack
