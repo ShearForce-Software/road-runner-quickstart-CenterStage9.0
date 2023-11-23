@@ -17,6 +17,7 @@ public class BlueRightAuto extends LinearOpMode {
     private final int READ_PERIOD = 1;
     int leftRightSpikeBound = 150;
     int autoPosition = 0;
+    double pixelDeliverForward =
     public void runOpMode(){
         Pose2d startPose = new Pose2d(-38.5,62.5,-90);
 
