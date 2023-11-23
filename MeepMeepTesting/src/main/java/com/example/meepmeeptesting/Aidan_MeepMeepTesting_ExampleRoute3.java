@@ -55,14 +55,16 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
                 .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
+                //commented until 1st meet ends
                 // back to stack
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+             //   .setReversed(false)
+               // .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
+             //   .splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+                //commented until 1st meet ends
                // to backboard and then to stack
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
+              //  .setReversed(true)
+            //    .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
+               // .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
               //  .build());
        /* try
         {
@@ -73,15 +75,16 @@ public class Aidan_MeepMeepTesting_ExampleRoute3 {
             Thread.currentThread().interrupt();
         }
         */
-
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+                //commented until 1st meet ends
+               // .setReversed(false)
+                //.splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))
+                //.splineToLinearHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
 
                 // manuever to drive under rigging back to backboard then back to stack
-                .setReversed(true)
-                .splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
+                //commented until 1st meet ends
+               // .setReversed(true)
+                //.splineToLinearHeading(new Pose2d(20, 12, Math.toRadians(180)), Math.toRadians(0))
+                //.splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
 /*
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(20, 12), Math.toRadians(180))

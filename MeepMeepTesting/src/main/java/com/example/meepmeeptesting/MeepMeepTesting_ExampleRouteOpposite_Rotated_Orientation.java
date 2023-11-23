@@ -113,6 +113,12 @@ public class MeepMeepTesting_ExampleRouteOpposite_Rotated_Orientation { public s
 
             .build());
 
+    meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+            .setDarkMode(false)
+            .setBackgroundAlpha(0.95f)
+            .addEntity(myBot)
+            .start();
+
 
   /*  Image img = null;
     try { img = ImageIO.read(new File("C:\\Users\\chris\\OneDrive\\Desktop\\FTC\\4_Center Stage\\field-2023-official.png")); }
