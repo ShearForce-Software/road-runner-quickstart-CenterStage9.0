@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.TankDrive;
+// RED SIDE AUTONOMOUS
 
 @TeleOp(name="splineTestClaire", group="Example")
 public final class splineTestCopy extends LinearOpMode {

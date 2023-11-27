@@ -60,6 +60,9 @@ import java.util.concurrent.TimeUnit;
 public class ConceptHuskyLens extends LinearOpMode {
 
     private final int READ_PERIOD = 1;
+    int leftSpikeBound = 100;
+    int rightSpikeBound = 200;
+    int autoPosition = 0;
 
     private HuskyLens huskyLens;
 
@@ -134,9 +137,34 @@ public class ConceptHuskyLens extends LinearOpMode {
              * Returns an empty array if no objects are seen.
              */
             HuskyLens.Block[] blocks = huskyLens.blocks();
-            telemetry.addData("Block count", blocks.length);
-            for (int i = 0; i < blocks.length; i++) {
-                telemetry.addData("Block", blocks[i].toString());
+            if (blocks.length > 0){
+                int xVal = blocks[0].x;
+                telemetry.addData("Team Art Detected: ", true);
+                telemetry.addData("Team Art X position: ", xVal);
+                //x value ranges from left to right 0 to 320, with 160 being the center
+                //create variables for x min/max values for each spike mark location 1,2,3
+                //determine position and assign variable for drive in autonomous
+                if (xVal < leftSpikeBound){
+                    autoPosition = 1;
+                }
+                else if ((xVal >= leftSpikeBound) && (xVal <= rightSpikeBound)){
+                    autoPosition = 2;
+
+                }
+                else if (xVal > rightSpikeBound){
+                    autoPosition = 3;
+                }
+                else
+                {
+                    telemetry.addData("Husky Lens code wrong, default to ", 2);
+                    autoPosition = 2;
+                }
+                telemetry.addData("Auto position: ", autoPosition);
+            }
+            else{
+                //pick a spot
+                telemetry.addData("!!Team Art NOT DETECTED!! ", "DEFAULT TO CENTER");
+                autoPosition = 2;
             }
 
             telemetry.update();

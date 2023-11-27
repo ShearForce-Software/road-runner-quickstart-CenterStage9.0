@@ -36,7 +36,8 @@ public class  UniversalControlClass {
     RevColorSensorV3 rightColorSensor;
     HuskyLens huskyLens;
     BNO055IMU imu;
-    Servo   grabberServo1;
+    Servo   grabberLeft;
+    Servo   grabberRight;
     RevBlinkinLedDriver.BlinkinPattern Blinken_left_pattern;
     RevBlinkinLedDriver.BlinkinPattern Blinken_right_pattern;
     RevBlinkinLedDriver blinkinLedDriverLeft;
@@ -73,9 +74,10 @@ public class  UniversalControlClass {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront_rightOdometry");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-        intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
-        intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
-        grabberServo1 = hardwareMap.get(Servo.class, "grabber");
+        intakeLeft = hardwareMap.get(CRServo.class, "leftIntake");
+        intakeRight = hardwareMap.get(CRServo.class, "rightIntake");
+        grabberLeft = hardwareMap.get(Servo.class, "leftGrabber");
+        grabberRight = hardwareMap.get(Servo.class, "rightGrabber");
         rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
         leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
         SlideLimit = hardwareMap.get(DigitalChannel.class, "SlideLimit");
@@ -88,6 +90,8 @@ public class  UniversalControlClass {
         rightRear.setDirection(DcMotor.Direction.REVERSE);
         rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         SlideLimit.setMode(DigitalChannel.Mode.INPUT);
 
@@ -95,6 +99,9 @@ public class  UniversalControlClass {
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+        grabberLeft.setPosition(0);
+        grabberRight.setPosition(0);
     }
 
     public void InitBlinkin(HardwareMap hardwareMap) {
@@ -339,7 +346,7 @@ public class  UniversalControlClass {
     public void DetectTeamArt() {
         //TODO: MADDIE/JACOB detect team art location and set variable for location
         HuskyLens.Block[] blocks = huskyLens.blocks();
-        if (blocks.length <0){
+        if (blocks.length > 0){
             int xVal = blocks[0].x;
             opMode.telemetry.addData("Team Art Detected: ", true);
             opMode.telemetry.addData("Team Art X position: ", xVal);
@@ -355,6 +362,11 @@ public class  UniversalControlClass {
             }
             else if (xVal > rightSpikeBound){
                 autoPosition = 3;
+            }
+            else
+            {
+                opMode.telemetry.addData("Husky Lens code wrong, default to ", 2);
+                autoPosition = 2;
             }
             opMode.telemetry.addData("Auto position: ", autoPosition);
         }

@@ -22,9 +22,9 @@ public class CRServoIntake extends LinearOpMode
         while(opModeIsActive()){
 
             // Set the contServo direction and power; // Intaking
-            leftIntake.setDirection(DcMotorSimple.Direction.FORWARD);
+            leftIntake.setDirection(DcMotorSimple.Direction.REVERSE );
             leftIntake.setPower(1.0);
-            rightIntake.setDirection(DcMotorSimple.Direction.REVERSE);
+            rightIntake.setDirection(DcMotorSimple.Direction.FORWARD);
             rightIntake.setPower(1.0);
             //idle();
         }
