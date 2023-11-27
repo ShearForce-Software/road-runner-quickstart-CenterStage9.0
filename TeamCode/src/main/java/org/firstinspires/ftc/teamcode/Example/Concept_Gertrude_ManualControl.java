@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.Example;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 /*
  * This OpMode moves tests all of Gertude's servos and motors.
@@ -44,6 +46,11 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
     Servo   grabberServoRight;
     Servo   armServoLeft;
     Servo   armServoRight;
+    DcMotor slideLeft;
+    DcMotor slideRight;
+    TouchSensor limitSwitchLeft;
+    TouchSensor limitSwitchRight;
+
 
     Servo pixelFlipLeft;
     Servo pixelFlipRight;
@@ -76,7 +83,10 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
         armServoRight = hardwareMap.get(Servo.class, "armRotateRight");
         pixelFlipLeft = hardwareMap.get(Servo.class, "pixelRotateLeft");
         pixelFlipRight = hardwareMap.get(Servo.class, "pixelRotateRight");
-
+        slideLeft = hardwareMap.get(DcMotor.class, "slideLeft");
+        slideRight = hardwareMap.get(DcMotor.class, "slideRight");
+        limitSwitchLeft = hardwareMap.get(TouchSensor.class, "limitSwitchLeft");
+        limitSwitchRight = hardwareMap.get(TouchSensor.class, "limitSwitchRight");
         // Initialize servo
 
         intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -87,6 +97,9 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
         armServoRight.setDirection(Servo.Direction.FORWARD);
         pixelFlipLeft.setDirection(Servo.Direction.REVERSE);
         pixelFlipRight.setDirection(Servo.Direction.FORWARD);
+        slideRight.setDirection(DcMotor.Direction.FORWARD);
+        slideLeft.setDirection((DcMotor.Direction.REVERSE));
+
 
         // Telemetry
         telemetry.addData(">", "Press Start to test." );
@@ -171,6 +184,19 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
                 if (pixelRotateRightPosition <= MIN_POS_PIXEL) {
                     pixelRotateRightPosition = MIN_POS_PIXEL;
                 }
+            }
+            // manual slide control
+            if (gamepad1.dpad_up){
+                slideLeft.setPower(.25);
+                slideRight.setPower(.25);
+            }
+            //limit switch left
+            if (limitSwitchLeft.isPressed() && gamepad1.dpad_down){
+                slideLeft.setPower(0);
+            }
+            // limit switch right
+            if (limitSwitchRight.isPressed() && gamepad1.dpad_down){
+                slideRight.setPower(0);
             }
 
 
