@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Example;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 public class ConceptBlinkin
 {
     RevBlinkinLedDriver blinkinLedDriverLeft;

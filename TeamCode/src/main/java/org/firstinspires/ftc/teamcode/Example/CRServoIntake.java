@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.Example;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp(name = "Example: CRServo Intake", group = "Example")
-//@Disabled
+@Disabled
 public class CRServoIntake extends LinearOpMode
 {
     CRServo leftIntake;

@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.Example;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -41,8 +42,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * This code assumes a Servo configured with the name "contServo1" as is found on a Robot.
  *
  */
+
+@Disabled
 @TeleOp(name = "Example: Cont Servo", group = "Example")
-//@Disabled
+
 public class ConceptContServo extends LinearOpMode {
 
     // Define class members
