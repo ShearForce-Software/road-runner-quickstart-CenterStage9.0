@@ -35,8 +35,10 @@ public class MeepMeepBlueBackdrop_MEETONE {
                // .setTangent(Math.toRadians(270))
                // .splineTo(new Vector2d(14, 10), Math.toRadians(270))
 
-                .setTangent(Math.toRadians(270))
-                .splineTo(new Vector2d(15, 14), Math.toRadians(180))
+                .setTangent(Math.toRadians(90))
+                .splineTo(new Vector2d(15, 14), Math.toRadians(0))
+
+                //Or 270, and 180 for Math.toRadians ^ (They both are mediocre...)
 
                 //Pause here for several seconds for partner
 
