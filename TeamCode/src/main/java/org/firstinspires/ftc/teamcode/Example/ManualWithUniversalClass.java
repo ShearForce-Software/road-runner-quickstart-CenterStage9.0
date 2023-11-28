@@ -28,6 +28,8 @@ public class ManualWithUniversalClass extends LinearOpMode {
                 theRobot.SetSlidePower(.25);
             }else if (gamepad2.dpad_down){
                 theRobot.SetSlidePower(-.25);
+            }else {
+                theRobot.SetSlidePower(0);
             }
 
             if (gamepad2.left_stick_y != 0){ // wrist movement

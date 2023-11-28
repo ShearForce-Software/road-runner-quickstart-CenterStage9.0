@@ -111,6 +111,7 @@ public class  UniversalControlClass {
         leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightSlide.setDirection(DcMotor.Direction.FORWARD);
         leftSlide.setDirection(DcMotor.Direction.REVERSE);
+        intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -218,7 +219,7 @@ public class  UniversalControlClass {
     }
     public void SetSlidePower(double power){
         //TODO: CLAIRE slides w/ limit switch
-        if (leftSlideLimit.isPressed() && power < 0)
+        if ((leftSlideLimit.isPressed() && power < 0) || (rightSlideLimit.isPressed() && power < 0))
         {
             slidePower = 0;
             leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
