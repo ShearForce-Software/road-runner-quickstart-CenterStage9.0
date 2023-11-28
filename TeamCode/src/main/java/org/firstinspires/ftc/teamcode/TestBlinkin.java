@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @Disabled
 public class TestBlinkin extends LinearOpMode
 {
-    UniversalControlClass theRobot = new UniversalControlClass(true, true, this);;
+    UniversalControlClass theRobot = new UniversalControlClass(true, true, this);
     boolean button;
     RevBlinkinLedDriver.BlinkinPattern pattern;
     @SuppressLint("SuspiciousIndentation")

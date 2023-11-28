@@ -5,6 +5,7 @@ import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -64,6 +65,12 @@ public class  UniversalControlClass {
     public static final double SLIDE_POWER   = 0.50;
     public static final int SLIDE_MAX_HEIGHT = 500;
     public static final int SLIDE_MIN_HEIGHT = 0;
+    public double wristPosition = 0.0;
+    public double wholeArmPosition = 0.04;
+    static final double MAX_WRIST_POS = 1.0;
+    static final double MIN_WRIST_POS = 0.0;
+    static final double MAX_WHOLE_ARM_POS = 1.0;
+    static final double MIN_WHOLE_ARM_POS = 0.04;
 
     private double slidePower = 0.0;
 
@@ -102,6 +109,8 @@ public class  UniversalControlClass {
         leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightSlide.setDirection(DcMotor.Direction.FORWARD);
+        leftSlide.setDirection(DcMotor.Direction.REVERSE);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -125,18 +134,58 @@ public class  UniversalControlClass {
 
         blinkinLedDriverLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE);
     }
+    public void ArmWrist(double position){
+        if (position > MAX_WRIST_POS){
+            wristPosition = MAX_WRIST_POS;
+        }else if(position < MIN_WRIST_POS){
+            wristPosition = MIN_WRIST_POS;
+        }else{
+            wristPosition = position;
+        }
+        pixelRotLeft.setPosition(position);
+        pixelRotRight.setPosition(position);
+    }
+    public double getWristPosition(){
+        return wristPosition;
+    }
+    public void WholeArmRot(double position){
+    if (position > MAX_WHOLE_ARM_POS){
+            wholeArmPosition = MAX_WHOLE_ARM_POS;
+        }else if(position < MIN_WHOLE_ARM_POS){
+            wholeArmPosition = MIN_WHOLE_ARM_POS;
+        }else{
+            wholeArmPosition = position;
+        }
+        armRotLeft.setPosition(position);
+        armRotLeft.setPosition(position);
+    }
+    public double getWholeArmPosition(){
+        return wholeArmPosition;
+    }
+    public void GrabLeft(){
+        grabberLeft.setPosition(.72);
+    }
+    public void GrabRight(){
+        grabberRight.setPosition(.72);
+    }
+    public void ReleaseLeft(){
+        grabberLeft.setPosition(0);
+    }
+    public void ReleaseRight(){
+        grabberRight.setPosition(0);
+    }
 
     public void ServoIntake() {
-        intakeRight.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeRight.setPower(1.0);
-        intakeLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeLeft.setPower(1.0);
     }
     public void ServoOuttake() {
-        intakeRight.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeRight.setPower(-1);
-        intakeLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         intakeLeft.setPower(-1);
+    }
+    public void ServoStop(){
+        intakeLeft.setPower(0);
+        intakeRight.setPower(0);
     }
 
     public void IntakeDistanceStop() {
@@ -163,9 +212,13 @@ public class  UniversalControlClass {
         rightSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
         SetSlidePower(-1*SLIDE_POWER);
     }
-    private void SetSlidePower(double power){
+    public void ManualSlide(double power){
+        leftSlide.setPower(power);
+        rightSlide.setPower(power);
+    }
+    public void SetSlidePower(double power){
         //TODO: CLAIRE slides w/ limit switch
-        if (leftSlideLimit.isPressed() == true && power > 0)
+        if (leftSlideLimit.isPressed() && power < 0)
         {
             slidePower = 0;
             leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -177,6 +230,14 @@ public class  UniversalControlClass {
         }
         leftSlide.setPower(slidePower);
         rightSlide.setPower(slidePower);
+    }
+    public void ShowSlideTelemetry(){
+        opMode.telemetry.addData("Left Slide: ", leftSlide.getCurrentPosition());
+        opMode.telemetry.addData("Right Slide: ", rightSlide.getCurrentPosition());
+        opMode.telemetry.addData("Arm Servo Left: ", armRotLeft.getPosition());
+        opMode.telemetry.addData("Arm Servo Right: ", armRotRight.getPosition());
+        opMode.telemetry.addData("Wrist Position: ", wristPosition);
+        opMode.telemetry.addData("Whole Arm Position: ", wholeArmPosition);
     }
 
 //    CLAIRE- it seems like this method is unused? you check the slide limit in the SetSlidePower method.
@@ -418,9 +479,9 @@ public class  UniversalControlClass {
 //    }
 
     public void driveControlsRobotCentric() {
-        double y = opMode.gamepad2.left_stick_y;
-        double x = -opMode.gamepad2.left_stick_x * 1.1;
-        double rx = opMode.gamepad2.right_stick_x;
+        double y = opMode.gamepad1.left_stick_y;
+        double x = -opMode.gamepad1.left_stick_x * 1.1;
+        double rx = opMode.gamepad1.right_stick_x;
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         double frontLeftPower = (y + x + rx) / denominator;
@@ -452,9 +513,9 @@ public class  UniversalControlClass {
     }
 
     public void driveControlsFieldCentric() {
-        double y = -opMode.gamepad2.left_stick_y;
-        double x = opMode.gamepad2.left_stick_x * 1.1;
-        double rx = opMode.gamepad2.right_stick_x;
+        double y = -opMode.gamepad1.left_stick_y;
+        double x = opMode.gamepad1.left_stick_x * 1.1;
+        double rx = opMode.gamepad1.right_stick_x;
 
         double botHeading = -imu.getAngularOrientation().firstAngle;
 
