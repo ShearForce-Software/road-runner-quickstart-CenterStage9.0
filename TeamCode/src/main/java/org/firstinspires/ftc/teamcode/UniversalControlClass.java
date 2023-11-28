@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +28,8 @@ public class  UniversalControlClass {
     DcMotor rightRear;
     DcMotor rightSlide;
     DcMotor leftSlide;
-    DigitalChannel SlideLimit;
+    TouchSensor leftSlideLimit;
+    TouchSensor rightSlideLimit;
     CRServo intakeLeft;
     CRServo intakeRight;
     DistanceSensor leftHopper;
@@ -38,6 +40,10 @@ public class  UniversalControlClass {
     BNO055IMU imu;
     Servo   grabberLeft;
     Servo   grabberRight;
+    Servo armRotRight;
+    Servo armRotLeft;
+    Servo pixelRotRight;
+    Servo pixelRotLeft;
     RevBlinkinLedDriver.BlinkinPattern Blinken_left_pattern;
     RevBlinkinLedDriver.BlinkinPattern Blinken_right_pattern;
     RevBlinkinLedDriver blinkinLedDriverLeft;
@@ -74,16 +80,20 @@ public class  UniversalControlClass {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront_rightOdometry");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-        intakeLeft = hardwareMap.get(CRServo.class, "leftIntake");
-        intakeRight = hardwareMap.get(CRServo.class, "rightIntake");
-        grabberLeft = hardwareMap.get(Servo.class, "leftGrabber");
-        grabberRight = hardwareMap.get(Servo.class, "rightGrabber");
+        intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
+        intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
+        grabberLeft = hardwareMap.get(Servo.class, "pixelGrabberLeft");
+        grabberRight = hardwareMap.get(Servo.class, "pixelGrabberRight");
+        armRotLeft = hardwareMap.get(Servo.class, "armRotateLeft");
+        armRotRight = hardwareMap.get(Servo.class, "armRotateRight");
+        pixelRotLeft = hardwareMap.get(Servo.class, "pixelRotateLeft");
+        pixelRotRight = hardwareMap.get(Servo.class, "pixelRotateRight");
         rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
         leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
-        SlideLimit = hardwareMap.get(DigitalChannel.class, "SlideLimit");
-        InitBlinkin(hardwareMap);
-
-
+        leftSlideLimit = hardwareMap.get(TouchSensor.class, "leftSlideLimit");
+        rightSlideLimit = hardwareMap.get(TouchSensor.class, "rightSlideLimit");
+        //InitBlinkin(hardwareMap);
+        huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens1");
 
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
@@ -93,8 +103,6 @@ public class  UniversalControlClass {
         rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        SlideLimit.setMode(DigitalChannel.Mode.INPUT);
-
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -102,6 +110,12 @@ public class  UniversalControlClass {
 
         grabberLeft.setPosition(0);
         grabberRight.setPosition(0);
+    }
+    public void AutoStartPos(){
+        armRotLeft.setPosition(.16);
+        armRotRight.setPosition(.16);
+        pixelRotLeft.setPosition(.06);
+        pixelRotRight.setPosition(.06);
     }
 
     public void InitBlinkin(HardwareMap hardwareMap) {
@@ -151,7 +165,7 @@ public class  UniversalControlClass {
     }
     private void SetSlidePower(double power){
         //TODO: CLAIRE slides w/ limit switch
-        if (SlideLimit.getState() == true && power > 0)
+        if (leftSlideLimit.isPressed() == true && power > 0)
         {
             slidePower = 0;
             leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
