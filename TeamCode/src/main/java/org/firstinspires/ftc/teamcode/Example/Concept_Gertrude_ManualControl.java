@@ -103,6 +103,10 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
 
         // Telemetry
         telemetry.addData(">", "Press Start to test." );
+        telemetry.addData("Left Slide: ", slideLeft);
+        telemetry.addData("Right Slide: ", slideRight);
+        telemetry.addData("Arm Servo Left: ", armRotationLeftPosition);
+        telemetry.addData("Arm Servo Right: ", armRotationRightPosition);
         telemetry.update();
         waitForStart();
 
