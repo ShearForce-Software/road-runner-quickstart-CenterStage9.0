@@ -112,6 +112,7 @@ public class  UniversalControlClass {
         rightSlide.setDirection(DcMotor.Direction.FORWARD);
         leftSlide.setDirection(DcMotor.Direction.REVERSE);
         intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        armRotLeft.setDirection(Servo.Direction.REVERSE);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;

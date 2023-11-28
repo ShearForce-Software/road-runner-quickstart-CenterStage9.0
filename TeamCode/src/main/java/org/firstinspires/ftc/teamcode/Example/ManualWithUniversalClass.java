@@ -25,9 +25,9 @@ public class ManualWithUniversalClass extends LinearOpMode {
                 theRobot.ServoStop();
             }
 
-            if (gamepad2.dpad_up) {  // slides up and down with limit switches
+            if (gamepad2.dpad_down) {  // slides up and down with limit switches
                 theRobot.SetSlidePower(.25);
-            }else if (gamepad2.dpad_down){
+            }else if (gamepad2.dpad_up){
                 theRobot.SetSlidePower(-.25);
             }else {
                 theRobot.SetSlidePower(0);
