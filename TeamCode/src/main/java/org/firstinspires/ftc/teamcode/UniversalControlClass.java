@@ -17,7 +17,13 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 @Config
 public class  UniversalControlClass {
@@ -71,6 +77,19 @@ public class  UniversalControlClass {
     static final double MIN_WRIST_POS = 0.0;
     static final double MAX_WHOLE_ARM_POS = 1.0;
     static final double MIN_WHOLE_ARM_POS = 0.04;
+    //NAV TO TAG VARIABLES
+    final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
+    final double SPEED_GAIN  =  0.02  ;   //  Forward Speed Control "Gain". eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
+    final double STRAFE_GAIN =  0.015 ;   //  Strafe Speed Control "Gain".  eg: Ramp up to 25% power at a 25 degree Yaw error.   (0.25 / 25.0)
+    final double TURN_GAIN   =  0.01  ;   //  Turn Control "Gain".  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
+    final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
+    final double MAX_AUTO_STRAFE= 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
+    final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
+    private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
+    private static int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private VisionPortal visionPortal;               // Used to manage the video source.
+    private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
+    private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
     private double slidePower = 0.0;
 
@@ -81,6 +100,32 @@ public class  UniversalControlClass {
         this.opMode = opMode;
     }
 
+    public void WebcamInit (HardwareMap hardwareMap){
+        double  drive           = 0;        // Desired forward power/speed (-1 to +1)
+        double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
+        double  turn            = 0;        // Desired turning power/speed (-1 to +1)
+        aprilTag = new AprilTagProcessor.Builder().build();
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .addProcessor(aprilTag)
+                .build();
+    }
+
+    public void NavToTag(){
+        boolean targetFound = false;
+        desiredTag  = null;
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        for (AprilTagDetection detection : currentDetections) {
+            if ((detection.metadata != null) &&
+                    ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID))  ){
+                targetFound = true;
+                desiredTag = detection;
+                break;  // don't look any further.
+            } else {
+                opMode.telemetry.addData("Unknown Target", "Tag ID %d is not in TagLibrary\n", detection.id);
+            }
+        }
+    }
     public void Init (HardwareMap hardwareMap) {
         //TODO: hardware map all servos, motors, sensors, and cameras
         leftFront = hardwareMap.get(DcMotor.class, "leftFront_leftOdometry");
@@ -105,6 +150,11 @@ public class  UniversalControlClass {
         //TODO: set motor direction, zero power brake behavior, stop and reset encoders, etc
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightRear.setDirection(DcMotor.Direction.REVERSE);
+        armRotLeft.setDirection(Servo.Direction.REVERSE);
+        armRotRight.setDirection(Servo.Direction.FORWARD);
+        pixelRotLeft.setDirection(Servo.Direction.REVERSE);
+        grabberLeft.setDirection(Servo.Direction.REVERSE);
+        grabberRight.setDirection(Servo.Direction.FORWARD);
         rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -112,17 +162,35 @@ public class  UniversalControlClass {
         rightSlide.setDirection(DcMotor.Direction.FORWARD);
         leftSlide.setDirection(DcMotor.Direction.REVERSE);
         intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        armRotLeft.setDirection(Servo.Direction.REVERSE);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-
-        grabberLeft.setPosition(0);
-        grabberRight.setPosition(0);
     }
     public void AutoStartPos(){
+        grabberLeft.setPosition(0);
+        grabberRight.setPosition(0);
+        armRotLeft.setPosition(.16);
+        armRotRight.setPosition(.16);
+        pixelRotLeft.setPosition(.06);
+        pixelRotRight.setPosition(.06);
+    }
+    public void GrabPixels(){
+        grabberRight.setPosition(.72);
+        grabberLeft.setPosition(.72);
+    }
+    public void DropOnLine(){
+        armRotLeft.setPosition(.96);
+        armRotRight.setPosition(.96);
+        opMode.sleep(500);
+        grabberLeft.setPosition(0);
+        opMode.sleep(500);
+    }
+
+    public void SafeStow(){
+        grabberLeft.setPosition(.72);
+        grabberRight.setPosition(.72);
         armRotLeft.setPosition(.16);
         armRotRight.setPosition(.16);
         pixelRotLeft.setPosition(.06);
@@ -150,8 +218,8 @@ public class  UniversalControlClass {
         }else{
             wristPosition = position;
         }
-        pixelRotLeft.setPosition(position);
-        pixelRotRight.setPosition(position);
+        pixelRotLeft.setPosition(wristPosition);
+        pixelRotRight.setPosition(wristPosition);
     }
     public double getWristPosition(){
         return wristPosition;
@@ -164,8 +232,8 @@ public class  UniversalControlClass {
         }else{
             wholeArmPosition = position;
         }
-        armRotLeft.setPosition(position);
-        armRotLeft.setPosition(position);
+        armRotLeft.setPosition(wholeArmPosition);
+        armRotRight.setPosition(wholeArmPosition);
     }
     public double getWholeArmPosition(){
         return wholeArmPosition;
@@ -438,6 +506,12 @@ public class  UniversalControlClass {
             //determine position and assign variable for drive in autonomous
             if (xVal < leftSpikeBound){
                 autoPosition = 1;
+                //if(isBlue){
+                   // DESIRED_TAG_ID = 1;
+                //}
+                //else{
+                 //   DESIRED_TAG_ID = 4;
+                //}
             }
             else if ((xVal >= leftSpikeBound) && (xVal <= rightSpikeBound)){
                 autoPosition = 2;

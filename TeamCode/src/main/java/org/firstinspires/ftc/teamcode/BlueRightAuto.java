@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 @Autonomous(name="Blue Right")
 public class BlueRightAuto extends LinearOpMode {
-    UniversalControlClass control = new UniversalControlClass(true, false, this);
+    UniversalControlClass control = new UniversalControlClass(true, false,this);
     private HuskyLens huskyLens;
     private final int READ_PERIOD = 1;
     int leftRightSpikeBound = 150;
@@ -29,19 +29,31 @@ public class BlueRightAuto extends LinearOpMode {
 
         telemetry.update();
 
-        while(!isStarted()) control.DetectTeamArt();
+        while(!isStarted()){
+            control.DetectTeamArt();
+            telemetry.update();
+        }
 
         telemetry.update();
         waitForStart();
+        control.GrabPixels();
 
         Actions.runBlocking(
             drive.actionBuilder(startPose)
                     .splineToLinearHeading(new Pose2d(-38.5, 14.5, Math.toRadians(270)), Math.toRadians(270))
-                    .setTangent(0)
-                    .splineToLinearHeading(new Pose2d(-30,13, Math.toRadians(180)), Math.toRadians(0))
-                    //.setTangent(0)
-                    .splineToLinearHeading(new Pose2d(24,12, Math.toRadians(180)), Math.toRadians(0))
-                    .splineToLinearHeading(new Pose2d(48,36, Math.toRadians(180)), Math.toRadians(0))
                 .build());
+        control.DropOnLine();
+        control.SafeStow();
+    Actions.runBlocking(
+            drive.actionBuilder(new Pose2d(-38.5, 14.5, Math.toRadians(270)))
+                    .splineToLinearHeading(new Pose2d(-38,10, Math.toRadians(270)), Math.toRadians(270))
+                    .setTangent(0)
+                    .splineToLinearHeading(new Pose2d(-30,10, Math.toRadians(180)), Math.toRadians(0))
+            //.setTangent(0)
+                    .splineToLinearHeading(new Pose2d(30,10, Math.toRadians(180)), Math.toRadians(0))
+                    .splineToLinearHeading(new Pose2d(48,36, Math.toRadians(180)), Math.toRadians(0))
+            .build());
+
     }
 }
+

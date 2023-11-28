@@ -74,7 +74,6 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
     public void runOpMode() {
 
         // Hardware map
-
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         grabberServoLeft = hardwareMap.get(Servo.class, "pixelGrabberLeft");
@@ -85,10 +84,10 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
         pixelRotRight = hardwareMap.get(Servo.class, "pixelRotateRight");
         slideLeft = hardwareMap.get(DcMotor.class, "leftSlide");
         slideRight = hardwareMap.get(DcMotor.class, "rightSlide");
-        limitSwitchLeft = hardwareMap.get(TouchSensor.class, "limitSwitchLeft");
-        limitSwitchRight = hardwareMap.get(TouchSensor.class, "limitSwitchRight");
-        // Initialize servo
+        limitSwitchLeft = hardwareMap.get(TouchSensor.class, "leftSlideLimit");
+        limitSwitchRight = hardwareMap.get(TouchSensor.class, "rightSlideLimit");
 
+        // Initialize servo
         intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
         grabberServoLeft.setDirection(Servo.Direction.REVERSE);

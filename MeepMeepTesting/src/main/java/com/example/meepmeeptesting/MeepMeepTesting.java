@@ -25,11 +25,13 @@ public class MeepMeepTesting {
 
                 // https://rr.brott.dev/docs/v1-0/builder-ref/  Reference for trajectory segments
                 .splineToLinearHeading(new Pose2d(-38.5, 14.5, Math.toRadians(270)), Math.toRadians(270))
+                        .waitSeconds(1)
+                        .splineToLinearHeading(new Pose2d(-38.5,10, Math.toRadians(270)), Math.toRadians(270))
                         .setTangent(0)
-                .splineToLinearHeading(new Pose2d(-30,13, Math.toRadians(180)), Math.toRadians(0))
-                //.setTangent(0)
-                .splineToLinearHeading(new Pose2d(24,12, Math.toRadians(180)), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(48,36, Math.toRadians(180)), Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(-30,10, Math.toRadians(180)), Math.toRadians(0))
+                        //.setTangent(0)
+                        .splineToLinearHeading(new Pose2d(30,10, Math.toRadians(180)), Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(48,36, Math.toRadians(180)), Math.toRadians(0))
                 .build());
 
 
