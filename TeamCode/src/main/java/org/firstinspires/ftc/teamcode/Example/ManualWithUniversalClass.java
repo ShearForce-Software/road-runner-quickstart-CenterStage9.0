@@ -10,6 +10,7 @@ public class ManualWithUniversalClass extends LinearOpMode {
     static final double SCALE = 0.001;
     public void runOpMode() {
         theRobot.Init(this.hardwareMap);
+        theRobot.ManualStartPos();
         theRobot.ShowSlideTelemetry();
         telemetry.update();
         waitForStart();

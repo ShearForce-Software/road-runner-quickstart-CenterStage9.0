@@ -127,6 +127,12 @@ public class  UniversalControlClass {
         pixelRotLeft.setPosition(.06);
         pixelRotRight.setPosition(.06);
     }
+    public void ManualStartPos(){
+        armRotLeft.setPosition(.07);
+        armRotRight.setPosition(.07);
+        pixelRotLeft.setPosition(.7);
+        pixelRotRight.setPosition(.7);
+    }
 
     public void InitBlinkin(HardwareMap hardwareMap) {
         blinkinLedDriverLeft = hardwareMap.get(RevBlinkinLedDriver.class,"leftBlinkin");
