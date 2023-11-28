@@ -5,16 +5,13 @@ import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -24,7 +21,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 @Config
 public class  UniversalControlClass {
     LinearOpMode opMode;
@@ -62,8 +59,7 @@ public class  UniversalControlClass {
     boolean IsFieldCentric;
     int hopperDistance = 5;
     double  grabberPosition = 0; // Start at minimum rotational position
-    int leftSpikeBound = 100;
-    int rightSpikeBound = 200;
+    int spikeBound = 160;
     int autoPosition;
     public static double grabPosition = 0.5;
     public static double dropPosition = 0;
@@ -90,7 +86,8 @@ public class  UniversalControlClass {
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
-
+    double rangeError = 0;
+    double yawError = 0;
     private double slidePower = 0.0;
 
     //TODO: Add any other specification variables
@@ -112,17 +109,17 @@ public class  UniversalControlClass {
     }
 
     public void NavToTag(){
-        boolean targetFound = false;
         desiredTag  = null;
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         for (AprilTagDetection detection : currentDetections) {
-            if ((detection.metadata != null) &&
-                    ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID))  ){
-                targetFound = true;
+            if ((detection.metadata != null) && (detection.id == DESIRED_TAG_ID) ){
                 desiredTag = detection;
+                rangeError      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
+                yawError        = desiredTag.ftcPose.yaw;
                 break;  // don't look any further.
             } else {
-                opMode.telemetry.addData("Unknown Target", "Tag ID %d is not in TagLibrary\n", detection.id);
+                opMode.telemetry.addData("Unknown Target - ", "No Tag Detected");
+                // set some range and yaw error
             }
         }
     }
@@ -494,36 +491,25 @@ public class  UniversalControlClass {
         //TODO: is there anything we have to do to import model?
         opMode.telemetry.update();
     }
-    public void DetectTeamArt() {
+    public void DetectTeamArtBlue() {
         //TODO: MADDIE/JACOB detect team art location and set variable for location
         HuskyLens.Block[] blocks = huskyLens.blocks();
         if (blocks.length > 0){
             int xVal = blocks[0].x;
             opMode.telemetry.addData("Team Art Detected: ", true);
             opMode.telemetry.addData("Team Art X position: ", xVal);
-            //x value ranges from left to right 0 to 320, with 160 being the center
-            //create variables for x min/max values for each spike mark location 1,2,3
-            //determine position and assign variable for drive in autonomous
-            if (xVal < leftSpikeBound){
-                autoPosition = 1;
-                //if(isBlue){
-                   // DESIRED_TAG_ID = 1;
-                //}
-                //else{
-                 //   DESIRED_TAG_ID = 4;
-                //}
-            }
-            else if ((xVal >= leftSpikeBound) && (xVal <= rightSpikeBound)){
+            if (xVal < spikeBound){
                 autoPosition = 2;
-
+                DESIRED_TAG_ID = 2;
             }
-            else if (xVal > rightSpikeBound){
+            else if (xVal > spikeBound){
                 autoPosition = 3;
+                DESIRED_TAG_ID = 3;
             }
             else
             {
-                opMode.telemetry.addData("Husky Lens code wrong, default to ", 2);
-                autoPosition = 2;
+                autoPosition = 1;
+                DESIRED_TAG_ID = 1;
             }
             opMode.telemetry.addData("Auto position: ", autoPosition);
         }
@@ -531,9 +517,39 @@ public class  UniversalControlClass {
             //pick a spot
             opMode.telemetry.addData("!!Team Art NOT DETECTED!! ", "DEFAULT TO CENTER");
             autoPosition = 2;
+            DESIRED_TAG_ID = 2;
         }
     }
 
+    public void DetectTeamArtRed() {
+        //TODO: MADDIE/JACOB detect team art location and set variable for location
+        HuskyLens.Block[] blocks = huskyLens.blocks();
+        if (blocks.length > 0){
+            int xVal = blocks[0].x;
+            opMode.telemetry.addData("Team Art Detected: ", true);
+            opMode.telemetry.addData("Team Art X position: ", xVal);
+            if (xVal < spikeBound){
+                autoPosition = 2;
+                DESIRED_TAG_ID = 5;
+            }
+            else if (xVal > spikeBound){
+                autoPosition = 3;
+                DESIRED_TAG_ID = 6;
+            }
+            else
+            {
+                autoPosition = 1;
+                DESIRED_TAG_ID = 4;
+            }
+            opMode.telemetry.addData("Auto position: ", autoPosition);
+        }
+        else{
+            //pick a spot
+            opMode.telemetry.addData("!!Team Art NOT DETECTED!! ", "DEFAULT TO CENTER");
+            autoPosition = 2;
+            DESIRED_TAG_ID = 5;
+        }
+    }
     public void LaunchAirplane() {
         //TODO: UNASSIGNED Launch plane
     }
