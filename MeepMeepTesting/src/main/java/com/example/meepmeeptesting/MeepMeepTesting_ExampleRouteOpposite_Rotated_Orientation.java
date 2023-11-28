@@ -113,7 +113,7 @@ public class MeepMeepTesting_ExampleRouteOpposite_Rotated_Orientation { public s
 
             .build());
 
-    meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+    meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
             .setDarkMode(false)
             .setBackgroundAlpha(0.95f)
             .addEntity(myBot)

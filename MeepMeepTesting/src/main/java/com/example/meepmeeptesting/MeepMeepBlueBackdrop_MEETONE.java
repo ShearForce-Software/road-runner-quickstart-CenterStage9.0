@@ -6,13 +6,7 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-public class MeepMeepTesting_ExampleRoute1_Rotated_Orientation {
+public class MeepMeepBlueBackdrop_MEETONE {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(600);
 
@@ -22,28 +16,39 @@ public class MeepMeepTesting_ExampleRoute1_Rotated_Orientation {
                 .setDimensions(17, 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-36, -60, Math.toRadians(90)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(14, 60, Math.toRadians(270)))
 
 
                 // https://rr.brott.dev/docs/v1-0/builder-ref/  Reference for trajectory segments
 
                 // move to spike box
-                .setTangent(Math.toRadians(90))
-                .splineTo(new Vector2d(-36, -36), Math.toRadians(90))
+                .splineTo(new Vector2d(14, 36), Math.toRadians(270))
 
-                //back out of spike box and maneuver for pixel stack
-                .setTangent(Math.toRadians(180))
-                .splineToConstantHeading(new Vector2d(-55, -48), Math.toRadians(180))
+                //Robot pause and either rotate and deliver pixel to one or three or drive forward
+
+                .setTangent(Math.toRadians(270))
+                .splineTo(new Vector2d(14, 14), Math.toRadians(270))
+
+                //Pause to deliver to spike mark 2
+                //Rotate robot
+
+               // .setTangent(Math.toRadians(270))
+               // .splineTo(new Vector2d(14, 10), Math.toRadians(270))
+
+                .setTangent(Math.toRadians(270))
+                .splineTo(new Vector2d(15, 14), Math.toRadians(180))
+
+                //Pause here for several seconds for partner
+
+                .setReversed(true)
+                .splineTo(new Vector2d(38, 14), Math.toRadians(0))
+                .setReversed(false)
 
 
-                // approach stack for pickup
-                .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(-60, -12, Math.toRadians(180)), Math.toRadians(180))
+                .splineToConstantHeading(new Vector2d(48, 36), Math.toRadians(0))
+                //Navigate with Camera
 
-                //2 seconds for two pixels
-                
-
-
+                /*
                 // drive across field toward backdrop
                 .setReversed(true)
                 .splineTo(new Vector2d(24, -12), Math.toRadians(0))
@@ -54,8 +59,8 @@ public class MeepMeepTesting_ExampleRoute1_Rotated_Orientation {
                 .splineToConstantHeading(new Vector2d(48, -36), Math.toRadians(0))
 
                 // return to center field
-                 .setTangent(90)
-                 .splineToConstantHeading(new Vector2d(24, -12), Math.toRadians(180))
+                .setTangent(90)
+                .splineToConstantHeading(new Vector2d(24, -12), Math.toRadians(180))
 
                 // drive to pixel stack for pickup #2
                 .splineTo(new Vector2d(-60, -12), Math.toRadians(180))
@@ -89,7 +94,7 @@ public class MeepMeepTesting_ExampleRoute1_Rotated_Orientation {
                 .setTangent(180)
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(55, -12), Math.toRadians(0))
-
+                */
                 .build());
 
 

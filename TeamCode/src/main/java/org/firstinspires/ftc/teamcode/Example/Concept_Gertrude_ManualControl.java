@@ -44,16 +44,16 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
     CRServo intakeRight;
     Servo   grabberServoLeft;
     Servo   grabberServoRight;
-    Servo   armServoLeft;
-    Servo   armServoRight;
+    Servo armRotLeft;
+    Servo armRotRight;
     DcMotor slideLeft;
     DcMotor slideRight;
     TouchSensor limitSwitchLeft;
     TouchSensor limitSwitchRight;
 
 
-    Servo pixelFlipLeft;
-    Servo pixelFlipRight;
+    Servo pixelRotLeft;
+    Servo pixelRotRight;
 
     static final double SCALE       = 0.001;     // Joystick scaling for servo increment value
     static final double MAX_POS     =  1.0;     // Maximum rotational position
@@ -79,12 +79,12 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         grabberServoLeft = hardwareMap.get(Servo.class, "pixelGrabberLeft");
         grabberServoRight = hardwareMap.get(Servo.class, "pixelGrabberRight");
-        armServoLeft = hardwareMap.get(Servo.class, "armRotateLeft");
-        armServoRight = hardwareMap.get(Servo.class, "armRotateRight");
-        pixelFlipLeft = hardwareMap.get(Servo.class, "pixelRotateLeft");
-        pixelFlipRight = hardwareMap.get(Servo.class, "pixelRotateRight");
-        slideLeft = hardwareMap.get(DcMotor.class, "slideLeft");
-        slideRight = hardwareMap.get(DcMotor.class, "slideRight");
+        armRotLeft = hardwareMap.get(Servo.class, "armRotateLeft");
+        armRotRight = hardwareMap.get(Servo.class, "armRotateRight");
+        pixelRotLeft = hardwareMap.get(Servo.class, "pixelRotateLeft");
+        pixelRotRight = hardwareMap.get(Servo.class, "pixelRotateRight");
+        slideLeft = hardwareMap.get(DcMotor.class, "leftSlide");
+        slideRight = hardwareMap.get(DcMotor.class, "rightSlide");
         limitSwitchLeft = hardwareMap.get(TouchSensor.class, "limitSwitchLeft");
         limitSwitchRight = hardwareMap.get(TouchSensor.class, "limitSwitchRight");
         // Initialize servo
@@ -93,10 +93,10 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
         intakeRight.setDirection(DcMotorSimple.Direction.FORWARD);
         grabberServoLeft.setDirection(Servo.Direction.REVERSE);
         grabberServoRight.setDirection(Servo.Direction.FORWARD);
-        armServoLeft.setDirection(Servo.Direction.REVERSE);
-        armServoRight.setDirection(Servo.Direction.FORWARD);
-        pixelFlipLeft.setDirection(Servo.Direction.REVERSE);
-        pixelFlipRight.setDirection(Servo.Direction.FORWARD);
+        armRotLeft.setDirection(Servo.Direction.REVERSE);
+        armRotRight.setDirection(Servo.Direction.FORWARD);
+        pixelRotLeft.setDirection(Servo.Direction.REVERSE);
+        pixelRotRight.setDirection(Servo.Direction.FORWARD);
         slideRight.setDirection(DcMotor.Direction.FORWARD);
         slideLeft.setDirection((DcMotor.Direction.REVERSE));
 
@@ -207,18 +207,18 @@ public class Concept_Gertrude_ManualControl extends LinearOpMode {
             // Set the servos to the new positions
             grabberServoLeft.setPosition(pixelGrabberLeftPosition);
             grabberServoRight.setPosition(pixelGrabberRightPosition);
-            armServoLeft.setPosition(armRotationLeftPosition);
-            armServoRight.setPosition(armRotationRightPosition);
-            pixelFlipLeft.setPosition(pixelRotateLeftPosition);
-            pixelFlipRight.setPosition(pixelRotateRightPosition);
+            armRotLeft.setPosition(armRotationLeftPosition);
+            armRotRight.setPosition(armRotationRightPosition);
+            pixelRotLeft.setPosition(pixelRotateLeftPosition);
+            pixelRotRight.setPosition(pixelRotateRightPosition);
 
             // Display the current value
             telemetry.addData("Pixel Grabber Left Servo Position", "%5.2f", grabberServoLeft.getPosition());
             telemetry.addData("Pixel Grabber Right Servo Position", "%5.2f", grabberServoRight.getPosition());
-            telemetry.addData("Arm Rotate Left Servo Position", "%5.2f", armServoLeft.getPosition());
-            telemetry.addData("Arm Rotate Right Servo Position", "%5.2f", armServoRight.getPosition());
-            telemetry.addData("Pixel Rotate Left Servo Position", "%5.2f", pixelFlipLeft.getPosition());
-            telemetry.addData("Pixel Rotate Right Servo Position", "%5.2f", pixelFlipRight.getPosition());
+            telemetry.addData("Arm Rotate Left Servo Position", "%5.2f", armRotLeft.getPosition());
+            telemetry.addData("Arm Rotate Right Servo Position", "%5.2f", armRotRight.getPosition());
+            telemetry.addData("Pixel Rotate Left Servo Position", "%5.2f", pixelRotLeft.getPosition());
+            telemetry.addData("Pixel Rotate Right Servo Position", "%5.2f", pixelRotRight.getPosition());
 
 
             telemetry.addData(">", "Press Stop to end test.");
