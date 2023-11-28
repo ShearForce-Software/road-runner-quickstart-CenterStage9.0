@@ -173,6 +173,7 @@ public class  UniversalControlClass {
         pixelRotLeft.setPosition(.06);
         pixelRotRight.setPosition(.06);
     }
+
     public void GrabPixels(){
         grabberRight.setPosition(.72);
         grabberLeft.setPosition(.72);
@@ -194,10 +195,34 @@ public class  UniversalControlClass {
         pixelRotRight.setPosition(.06);
     }
     public void ManualStartPos(){
-        armRotLeft.setPosition(.07);
-        armRotRight.setPosition(.07);
-        pixelRotLeft.setPosition(.7);
-        pixelRotRight.setPosition(.7);
+        armRotLeft.setPosition(.076);
+        armRotRight.setPosition(.076);
+        pixelRotLeft.setPosition(.66);
+        pixelRotRight.setPosition(.66);
+    }
+
+    public void GrabPixelPos(){ // in center of pixels
+        armRotLeft.setPosition(.04);
+        armRotRight.setPosition(.04);
+        pixelRotLeft.setPosition(.63);
+        pixelRotRight.setPosition(.63);
+
+    }
+
+    public void ReadyToLiftSlides(){ // slight move before lifting slides
+        armRotLeft.setPosition(.76);
+        armRotRight.setPosition(.76);
+        pixelRotLeft.setPosition(.63);
+        pixelRotRight.setPosition(.63);
+
+    }
+
+    public void DeliverPixelToBoardPos(){
+        armRotLeft.setPosition(.86);
+        armRotRight.setPosition(.86);
+        pixelRotLeft.setPosition(.19);
+        pixelRotRight.setPosition(.19);
+
     }
 
     public void InitBlinkin(HardwareMap hardwareMap) {
