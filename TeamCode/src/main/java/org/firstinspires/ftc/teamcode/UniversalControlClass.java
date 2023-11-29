@@ -46,8 +46,8 @@ public class  UniversalControlClass {
     Servo   grabberRight;
     Servo armRotRight;
     Servo armRotLeft;
-    Servo wristRight;
-    Servo wristLeft;
+    Servo pixelRotRight;
+    Servo pixelRotLeft;
     RevBlinkinLedDriver.BlinkinPattern Blinken_left_pattern;
     RevBlinkinLedDriver.BlinkinPattern Blinken_right_pattern;
     RevBlinkinLedDriver blinkinLedDriverLeft;
@@ -57,13 +57,12 @@ public class  UniversalControlClass {
     //TODO: set universal variables (public static to make available in dashboard
     boolean IsDriverControl;
     boolean IsFieldCentric;
-    int hopperDistance = 25;
+    int hopperDistance = 5;
     double  grabberPosition = 0; // Start at minimum rotational position
     int spikeBound = 160;
     int autoPosition;
     public static double grabPosition = 0.5;
     public static double dropPosition = 0;
-    boolean AutoIntake = false;
 
     public static final double SLIDE_POWER   = 0.50;
     public static final int SLIDE_MAX_HEIGHT = 500;
@@ -136,16 +135,12 @@ public class  UniversalControlClass {
         grabberRight = hardwareMap.get(Servo.class, "pixelGrabberRight");
         armRotLeft = hardwareMap.get(Servo.class, "armRotateLeft");
         armRotRight = hardwareMap.get(Servo.class, "armRotateRight");
-        wristLeft = hardwareMap.get(Servo.class, "pixelRotateLeft");
-        wristRight = hardwareMap.get(Servo.class, "pixelRotateRight");
+        pixelRotLeft = hardwareMap.get(Servo.class, "pixelRotateLeft");
+        pixelRotRight = hardwareMap.get(Servo.class, "pixelRotateRight");
         rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
         leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
         leftSlideLimit = hardwareMap.get(TouchSensor.class, "leftSlideLimit");
         rightSlideLimit = hardwareMap.get(TouchSensor.class, "rightSlideLimit");
-//        rightHopper = hardwareMap.get(DistanceSensor.class, "rightHopper");
-//        leftHopper = hardwareMap.get(DistanceSensor.class, "leftHopper");
-        leftColorSensor = hardwareMap.get(RevColorSensorV3.class, "ColorSensorLeft");
-        rightColorSensor = hardwareMap.get(RevColorSensorV3.class, "ColorSensorRight");
         //InitBlinkin(hardwareMap);
         huskyLens = hardwareMap.get(HuskyLens.class, "huskyLens1");
 
@@ -154,7 +149,7 @@ public class  UniversalControlClass {
         rightRear.setDirection(DcMotor.Direction.REVERSE);
         armRotLeft.setDirection(Servo.Direction.REVERSE);
         armRotRight.setDirection(Servo.Direction.FORWARD);
-        wristLeft.setDirection(Servo.Direction.REVERSE);
+        pixelRotLeft.setDirection(Servo.Direction.REVERSE);
         grabberLeft.setDirection(Servo.Direction.REVERSE);
         grabberRight.setDirection(Servo.Direction.FORWARD);
         rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -175,8 +170,8 @@ public class  UniversalControlClass {
         grabberRight.setPosition(0);
         armRotLeft.setPosition(.16);
         armRotRight.setPosition(.16);
-        wristLeft.setPosition(.06);
-        wristRight.setPosition(.06);
+        pixelRotLeft.setPosition(.06);
+        pixelRotRight.setPosition(.06);
     }
 
     public void GrabPixels(){
@@ -196,66 +191,38 @@ public class  UniversalControlClass {
         grabberRight.setPosition(.72);
         armRotLeft.setPosition(.16);
         armRotRight.setPosition(.16);
-        wristLeft.setPosition(.06);
-        wristRight.setPosition(.06);
+        pixelRotLeft.setPosition(.06);
+        pixelRotRight.setPosition(.06);
     }
     public void ManualStartPos(){
         armRotLeft.setPosition(.076);
         armRotRight.setPosition(.076);
-        wristLeft.setPosition(.66);
-        wristRight.setPosition(.66);
-        grabberLeft.setPosition(0);
-        grabberRight.setPosition(0);
+        pixelRotLeft.setPosition(.66);
+        pixelRotRight.setPosition(.66);
     }
 
     public void GrabPixelPos(){ // in center of pixels
         armRotLeft.setPosition(.04);
         armRotRight.setPosition(.04);
-        opMode.sleep(1000);
-        wristLeft.setPosition(.63);
-        wristRight.setPosition(.63);
+        pixelRotLeft.setPosition(.63);
+        pixelRotRight.setPosition(.63);
 
     }
 
     public void ReadyToLiftSlides(){ // slight move before lifting slides
-        armRotLeft.setPosition(.09);
-        armRotRight.setPosition(.09);
-        opMode.sleep(1000);
-        wristLeft.setPosition(.63);
-        wristRight.setPosition(.63);
+        armRotLeft.setPosition(.76);
+        armRotRight.setPosition(.76);
+        pixelRotLeft.setPosition(.63);
+        pixelRotRight.setPosition(.63);
 
     }
 
     public void DeliverPixelToBoardPos(){
         armRotLeft.setPosition(.86);
         armRotRight.setPosition(.86);
-        opMode.sleep(1000);
-        wristLeft.setPosition(.19);
-        wristRight.setPosition(.19);
+        pixelRotLeft.setPosition(.19);
+        pixelRotRight.setPosition(.19);
 
-    }
-    public void ResetArm(){
-        ManualStartPos();
-    }
-    public void PickupRoutine(){
-        if (AutoIntake){
-            ServoIntake();
-            if((leftColorSensor.getDistance(DistanceUnit.MM) < hopperDistance) && (rightColorSensor.getDistance(DistanceUnit.MM) < hopperDistance)){
-                opMode.sleep(1000);
-                ServoStop();
-                GrabPixelPos();
-                opMode.sleep(1000);
-                GrabPixels();
-                opMode.sleep(1000);
-                ReadyToLiftSlides();
-                AutoIntake = false;
-
-            }
-        }
-
-    }
-    public void EnableAutoIntake(){
-        AutoIntake = true;
     }
 
     public void InitBlinkin(HardwareMap hardwareMap) {
@@ -273,8 +240,8 @@ public class  UniversalControlClass {
         }else{
             wristPosition = position;
         }
-        wristLeft.setPosition(wristPosition);
-        wristRight.setPosition(wristPosition);
+        pixelRotLeft.setPosition(wristPosition);
+        pixelRotRight.setPosition(wristPosition);
     }
     public double getWristPosition(){
         return wristPosition;
@@ -307,8 +274,8 @@ public class  UniversalControlClass {
     }
 
     public void ServoIntake() {
-        intakeRight.setPower(-1.0);
-        intakeLeft.setPower(-1.0);
+        intakeRight.setPower(1.0);
+        intakeLeft.setPower(1.0);
     }
     public void ServoOuttake() {
         intakeRight.setPower(-1);
@@ -317,6 +284,14 @@ public class  UniversalControlClass {
     public void ServoStop(){
         intakeLeft.setPower(0);
         intakeRight.setPower(0);
+    }
+
+    public void IntakeDistanceStop() {
+        //TODO: JACOB Find hopper distance
+        if((leftHopper.getDistance(DistanceUnit.MM) < hopperDistance) && (rightHopper.getDistance(DistanceUnit.MM) < hopperDistance)){
+            intakeLeft.setPower(0);
+            intakeRight.setPower(0);
+        }
     }
 
     public void SlidesUp(){
@@ -359,10 +334,11 @@ public class  UniversalControlClass {
         opMode.telemetry.addData("Right Slide: ", rightSlide.getCurrentPosition());
         opMode.telemetry.addData("Arm Servo Left: ", armRotLeft.getPosition());
         opMode.telemetry.addData("Arm Servo Right: ", armRotRight.getPosition());
-        opMode.telemetry.addData("Wrist Position: ", wristLeft.getPosition());
+        opMode.telemetry.addData("Wrist Position: ", wristPosition);
         opMode.telemetry.addData("Whole Arm Position: ", wholeArmPosition);
-        opMode.telemetry.addData("Left Hopper: ", leftColorSensor.getDistance(DistanceUnit.MM));
-        opMode.telemetry.addData("Right Hopper: ", rightColorSensor.getDistance(DistanceUnit.MM));
+    }
+    public void PickupRoutine(){
+
     }
 
 //    CLAIRE- it seems like this method is unused? you check the slide limit in the SetSlidePower method.
