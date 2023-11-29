@@ -48,7 +48,6 @@ public class  UniversalControlClass {
     Servo armRotLeft;
     Servo pixelRotRight;
     Servo pixelRotLeft;
-    Servo droneLauncher;
     RevBlinkinLedDriver.BlinkinPattern Blinken_left_pattern;
     RevBlinkinLedDriver.BlinkinPattern Blinken_right_pattern;
     RevBlinkinLedDriver blinkinLedDriverLeft;
@@ -58,7 +57,6 @@ public class  UniversalControlClass {
     //TODO: set universal variables (public static to make available in dashboard
     boolean IsDriverControl;
     boolean IsFieldCentric;
-    boolean isAllianceBlue;
     int hopperDistance = 5;
     double  grabberPosition = 0; // Start at minimum rotational position
     int spikeBound = 160;
@@ -68,7 +66,6 @@ public class  UniversalControlClass {
 
     public static final double SLIDE_POWER   = 0.50;
     public static final int SLIDE_MAX_HEIGHT = 500;
-    public static final int SLIDE_MED_HEIGHT = 250;
     public static final int SLIDE_MIN_HEIGHT = 0;
     public double wristPosition = 0.0;
     public double wholeArmPosition = 0.04;
@@ -99,19 +96,6 @@ public class  UniversalControlClass {
         this.IsFieldCentric = isFieldCentric;
         this.opMode = opMode;
     }
-
-    public void setDriverControlFieldCentric(){
-        IsFieldCentric = true;
-    }
-
-    public void setDriverControlRobotCentric(){
-        IsFieldCentric = false;
-    }
-
-    public void setAllianceColor(boolean isBlue){
-        isAllianceBlue = isBlue;
-    }
-
 
     public void WebcamInit (HardwareMap hardwareMap){
         double  drive           = 0;        // Desired forward power/speed (-1 to +1)
@@ -153,7 +137,6 @@ public class  UniversalControlClass {
         armRotRight = hardwareMap.get(Servo.class, "armRotateRight");
         pixelRotLeft = hardwareMap.get(Servo.class, "pixelRotateLeft");
         pixelRotRight = hardwareMap.get(Servo.class, "pixelRotateRight");
-        droneLauncher = hardwareMap.get(Servo.class, "droneLauncher");
         rightSlide = hardwareMap.get(DcMotor.class, "rightSlide");
         leftSlide = hardwareMap.get(DcMotor.class, "leftSlide");
         leftSlideLimit = hardwareMap.get(TouchSensor.class, "leftSlideLimit");
@@ -319,14 +302,6 @@ public class  UniversalControlClass {
         rightSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
         SetSlidePower(SLIDE_POWER);
     }
-
-    public void SlidesMedium(){
-        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftSlide.setTargetPosition(SLIDE_MED_HEIGHT);
-        rightSlide.setTargetPosition(SLIDE_MED_HEIGHT);
-        SetSlidePower(SLIDE_POWER);
-    }
     public void SlidesDown() {
         //TODO: CLAIRE find SLIDE_MIN_HEIGHT
         leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -361,8 +336,6 @@ public class  UniversalControlClass {
         opMode.telemetry.addData("Arm Servo Right: ", armRotRight.getPosition());
         opMode.telemetry.addData("Wrist Position: ", wristPosition);
         opMode.telemetry.addData("Whole Arm Position: ", wholeArmPosition);
-    }
-
     }
     public void PickupRoutine(){
 
@@ -607,7 +580,6 @@ public class  UniversalControlClass {
     }
     public void LaunchAirplane() {
         //TODO: UNASSIGNED Launch plane
-        droneLauncher.setPosition(1);
     }
 
     public void Hang() {
@@ -631,14 +603,7 @@ public class  UniversalControlClass {
 //        opMode.telemetry.addData("Grabber Position", "%5.2f", grabberPosition);
 //        opMode.telemetry.update();
 //    }
-    public void runDriveControls(){
-        if (this.IsFieldCentric) {
-            driveControlsFieldCentric();
-        }
-        else {
-            driveControlsRobotCentric();
-        }
-    }
+
     public void driveControlsRobotCentric() {
         double y = opMode.gamepad1.left_stick_y;
         double x = -opMode.gamepad1.left_stick_x * 1.1;
