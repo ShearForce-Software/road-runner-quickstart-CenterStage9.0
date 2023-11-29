@@ -337,6 +337,9 @@ public class  UniversalControlClass {
         opMode.telemetry.addData("Wrist Position: ", wristPosition);
         opMode.telemetry.addData("Whole Arm Position: ", wholeArmPosition);
     }
+    public void PickupRoutine(){
+
+    }
 
 //    CLAIRE- it seems like this method is unused? you check the slide limit in the SetSlidePower method.
 //    public void CheckForSlideLimit()
