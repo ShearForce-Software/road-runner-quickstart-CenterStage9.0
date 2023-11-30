@@ -54,10 +54,11 @@ public class BlueRightAuto extends LinearOpMode {
 //                    .splineToLinearHeading(new Pose2d(30,10, Math.toRadians(180)), Math.toRadians(0))
 //                    .splineToLinearHeading(new Pose2d(48,36, Math.toRadians(180)), Math.toRadians(0))
 //            .build());
+        control.DeliverPixelToBoardPos();
         control.NavToTag();
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(48, 36, Math.toRadians(180)))
                         .splineToLinearHeading(new Pose2d(48+control.rangeError,36+control.yawError, Math.toRadians(180)), Math.toRadians(180))
-                        .build());
+                .build());
     }
 }
