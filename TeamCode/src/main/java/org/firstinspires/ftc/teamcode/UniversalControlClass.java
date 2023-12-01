@@ -101,8 +101,8 @@ public class  UniversalControlClass {
     public void Init (HardwareMap hardwareMap) {
         //TODO: hardware map all servos, motors, sensors, and cameras
         leftFront = hardwareMap.get(DcMotor.class, "leftFront_leftOdometry");
-        leftRear = hardwareMap.get(DcMotor.class, "leftRear_rightOdometry");
-        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront_rightOdometry");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
@@ -343,37 +343,29 @@ public class  UniversalControlClass {
         }
     }
     public void SlidesLow(){
-        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftSlide.setTargetPosition(SLIDE_LOW_HEIGHT);
         rightSlide.setTargetPosition(SLIDE_LOW_HEIGHT);
+        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         SetSlidePower(SLIDE_POWER);
     }
     public void SlidesMedium(){
-        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftSlide.setTargetPosition(SLIDE_MEDIUM_HEIGHT);
         rightSlide.setTargetPosition(SLIDE_MEDIUM_HEIGHT);
+        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         SetSlidePower(SLIDE_POWER);
     }
     public void SlidesHigh(){
-        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
         rightSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
-        SetSlidePower(SLIDE_POWER);
-    }
-    public void SlidesUp(){
-        //TODO: CLAIRE find SLIDE_MAX_HEIGHT
         leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
-        rightSlide.setTargetPosition(SLIDE_MAX_HEIGHT);
         SetSlidePower(SLIDE_POWER);
     }
     public void SlidesDown() {
         //TODO: CLAIRE find SLIDE_MIN_HEIGHT
-        while ((!leftSlideLimit.isPressed()) || (!rightSlideLimit.isPressed())){
+        while ((!leftSlideLimit.isPressed()) && (!rightSlideLimit.isPressed())){
             leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        leftSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
@@ -392,6 +384,8 @@ public class  UniversalControlClass {
         }
         leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlide.setPower(0);
+        leftSlide.setPower(0);
     }
     public void ManualSlide(double power){
         leftSlide.setPower(power);
@@ -682,10 +676,10 @@ public class  UniversalControlClass {
         double frontRightPower = (rotY - rotX - rx) / denominator;
         double backRightPower = (rotY + rotX - rx) / denominator;
 
-        leftFront.setPower(frontLeftPower);
-        leftRear.setPower(backLeftPower);
-        rightFront.setPower(frontRightPower);
-        rightRear.setPower(backRightPower);
+        leftFront.setPower(frontLeftPower*.75);
+        leftRear.setPower(backLeftPower*.75);
+        rightFront.setPower(frontRightPower*.75);
+        rightRear.setPower(backRightPower*.75);
     }
     public void SpecialSleep(long milliseconds) {
         for (long stop = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(milliseconds); stop > System.nanoTime(); ) {
