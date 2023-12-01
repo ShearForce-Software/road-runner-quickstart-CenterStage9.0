@@ -48,7 +48,7 @@ public class BlueRightAuto extends LinearOpMode {
     Actions.runBlocking(
             drive.actionBuilder(new Pose2d(-38.5, 14.5, Math.toRadians(270)))
                     .splineToLinearHeading(new Pose2d(-38,10, Math.toRadians(270)), Math.toRadians(270))
-                    .setTangent(0)
+                    //.setTangent(0)
                     .splineToLinearHeading(new Pose2d(-30,10, Math.toRadians(180)), Math.toRadians(0))
             //.setTangent(0)
                     .splineToLinearHeading(new Pose2d(30,10, Math.toRadians(180)), Math.toRadians(0))
