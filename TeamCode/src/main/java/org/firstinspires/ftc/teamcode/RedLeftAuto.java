@@ -18,19 +18,18 @@ public class RedLeftAuto extends LinearOpMode {
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, startPose);
 
-        control.Init(hardwareMap);
-        control.HuskyLensInit();
+        control.Init(hardwareMap);;
         control.AutoStartPos();
 
-        telemetry.update();
-
         while(!isStarted()){
+            control.HuskyLensInit();
             control.DetectTeamArtRed();
             telemetry.update();
         }
 
         control.WebcamInit(hardwareMap);
         telemetry.update();
+
         waitForStart();
         control.GrabPixels();
 
@@ -50,9 +49,9 @@ public class RedLeftAuto extends LinearOpMode {
                     .splineToLinearHeading(new Pose2d(48,-36, Math.toRadians(180)), Math.toRadians(0))
             .build());
         control.NavToTag();
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(48, -36, Math.toRadians(180)))
-                        .splineToLinearHeading(new Pose2d(48+control.rangeError,-36+control.yawError, Math.toRadians(180)), Math.toRadians(180))
-                        .build());
+//        Actions.runBlocking(
+//                drive.actionBuilder(new Pose2d(48, -36, Math.toRadians(180)))
+//                        .splineToLinearHeading(new Pose2d(48+control.rangeError,-36+control.yawError, Math.toRadians(180)), Math.toRadians(180))
+//                        .build());
     }
 }
