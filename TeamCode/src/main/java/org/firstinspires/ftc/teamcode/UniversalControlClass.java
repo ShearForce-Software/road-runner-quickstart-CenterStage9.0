@@ -372,11 +372,25 @@ public class  UniversalControlClass {
     }
     public void SlidesDown() {
         //TODO: CLAIRE find SLIDE_MIN_HEIGHT
-        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
-        rightSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
-        SetSlidePower(SLIDE_POWER);
+        while ((!leftSlideLimit.isPressed()) || (!rightSlideLimit.isPressed())){
+            leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        leftSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
+//        rightSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
+            if (leftSlideLimit.isPressed()){
+                leftSlide.setPower(0);
+            }else{
+                leftSlide.setPower(slidePower);
+            }
+            if (rightSlideLimit.isPressed()){
+                rightSlide.setPower(0);
+            }else{
+                rightSlide.setPower(slidePower);
+            }
+            SpecialSleep(100);
+        }
+        leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     public void ManualSlide(double power){
         leftSlide.setPower(power);
