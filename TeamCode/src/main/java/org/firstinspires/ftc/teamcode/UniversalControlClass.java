@@ -364,17 +364,21 @@ public class  UniversalControlClass {
         SetSlidePower(SLIDE_POWER);
     }
     public void SlidesDown() {
-        //TODO: CLAIRE find SLIDE_MIN_HEIGHT
-        while ((!leftSlideLimit.isPressed()) && (!rightSlideLimit.isPressed())){
+        // set a 5 second timeout to protect against the slide limits never getting hit for some reason
+        double timeout = opMode.getRuntime() + 5;
+
+        // while one of the slide limit switches are not pressed
+        while ((!leftSlideLimit.isPressed()) && (!rightSlideLimit.isPressed()) && (opMode.getRuntime() < timeout))
+        {
             leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        leftSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
-//        rightSlide.setTargetPosition(SLIDE_MIN_HEIGHT);
+
             if (leftSlideLimit.isPressed()){
                 leftSlide.setPower(0);
             }else{
                 leftSlide.setPower(slidePower);
             }
+
             if (rightSlideLimit.isPressed()){
                 rightSlide.setPower(0);
             }else{
@@ -382,10 +386,14 @@ public class  UniversalControlClass {
             }
             SpecialSleep(100);
         }
+
+        // at least one of the slide limits has been pressed when we get to here, stop both slide motors, and then reset encoders to zero
         leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlide.setPower(0);
         leftSlide.setPower(0);
+        leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public void ManualSlide(double power){
         leftSlide.setPower(power);
@@ -409,6 +417,8 @@ public class  UniversalControlClass {
     public void ShowSlideTelemetry(){
         opMode.telemetry.addData("Left Slide: ", leftSlide.getCurrentPosition());
         opMode.telemetry.addData("Right Slide: ", rightSlide.getCurrentPosition());
+        opMode.telemetry.addData("LeftLimitPushed: ", leftSlideLimit.isPressed());
+        opMode.telemetry.addData("RightLimitPushed: ", rightSlideLimit.isPressed());
         opMode.telemetry.addData("Arm Servo Left: ", armRotLeft.getPosition());
         opMode.telemetry.addData("Arm Servo Right: ", armRotRight.getPosition());
         opMode.telemetry.addData("Wrist Position: ", wristLeft.getPosition());
