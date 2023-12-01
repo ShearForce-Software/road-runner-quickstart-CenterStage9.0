@@ -51,7 +51,7 @@ public class ManualWithUniversalClass extends LinearOpMode {
             if(gamepad2.b){
                 theRobot.ResetArm();
             }
-            if((gamepad2.right_trigger!=0)&&(gamepad2.left_trigger!=0)){
+            if(gamepad1.a){
                 theRobot.LaunchAirplane();
             }
             theRobot.ShowSlideTelemetry();
