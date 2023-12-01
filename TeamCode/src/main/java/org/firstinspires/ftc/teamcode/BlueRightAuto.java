@@ -37,12 +37,12 @@ public class BlueRightAuto extends LinearOpMode {
         control.WebcamInit(hardwareMap);
         telemetry.update();
         waitForStart();
-//        control.GrabPixels();
-//
-//        Actions.runBlocking(
-//            drive.actionBuilder(startPose)
-//                    .splineToLinearHeading(new Pose2d(-38.5, 14.5, Math.toRadians(270)), Math.toRadians(270))
-//                .build());
+        control.GrabPixels();
+
+        Actions.runBlocking(
+            drive.actionBuilder(startPose)
+                    .splineToLinearHeading(new Pose2d(-38.5, 14.5, Math.toRadians(270)), Math.toRadians(270))
+                .build());
 //        control.DropOnLine();
 //        control.SafeStow();
 //    Actions.runBlocking(
@@ -54,11 +54,11 @@ public class BlueRightAuto extends LinearOpMode {
 //                    .splineToLinearHeading(new Pose2d(30,10, Math.toRadians(180)), Math.toRadians(0))
 //                    .splineToLinearHeading(new Pose2d(48,36, Math.toRadians(180)), Math.toRadians(0))
 //            .build());
-        control.DeliverPixelToBoardPos();
-        control.NavToTag();
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(48, 36, Math.toRadians(180)))
-                        .splineToLinearHeading(new Pose2d(48+control.rangeError,36+control.yawError, Math.toRadians(180)), Math.toRadians(180))
-                .build());
+//        control.DeliverPixelToBoardPos();
+////        control.NavToTag();
+////        Actions.runBlocking(
+////                drive.actionBuilder(new Pose2d(48, 36, Math.toRadians(180)))
+////                        .splineToLinearHeading(new Pose2d(48+control.rangeError,36+control.yawError, Math.toRadians(180)), Math.toRadians(180))
+////                .build());
     }
 }
