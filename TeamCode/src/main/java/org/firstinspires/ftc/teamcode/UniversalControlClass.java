@@ -57,7 +57,7 @@ public class  UniversalControlClass {
     //TODO: set universal variables (public static to make available in dashboard
     boolean IsDriverControl;
     boolean IsFieldCentric;
-    int hopperDistance = 25;
+    int hopperDistance = 30;
     double  grabberPosition = 0; // Start at minimum rotational position
     int spikeBound = 160;
     int autoPosition;
@@ -200,8 +200,8 @@ public class  UniversalControlClass {
         wristRight.setPosition(.06);
     }
     public void ManualStartPos(){
-        armRotLeft.setPosition(.076);
-        armRotRight.setPosition(.076);
+        armRotLeft.setPosition(.07);
+        armRotRight.setPosition(.07);
         wristLeft.setPosition(.66);
         wristRight.setPosition(.66);
         grabberLeft.setPosition(0);
@@ -220,6 +220,12 @@ public class  UniversalControlClass {
         SpecialSleep(150);
         wristLeft.setPosition(.63);
         wristRight.setPosition(.63);
+        SpecialSleep(150);
+        leftSlide.setTargetPosition(100);
+        rightSlide.setTargetPosition(100);
+        leftSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        SetSlidePower(SLIDE_POWER);
     }
     public void DeliverPixelToBoardPos(){
         armRotLeft.setPosition(.86);
@@ -364,34 +370,32 @@ public class  UniversalControlClass {
         SetSlidePower(SLIDE_POWER);
     }
     public void SlidesDown() {
-        // set a 5 second timeout to protect against the slide limits never getting hit for some reason
-        double timeout = opMode.getRuntime() + 5;
-
+        double timeout = opMode.getRuntime() + 3;
         // while one of the slide limit switches are not pressed
-        while ((!leftSlideLimit.isPressed()) && (!rightSlideLimit.isPressed()) && (opMode.getRuntime() < timeout))
+        while ((!(leftSlideLimit.isPressed() && rightSlideLimit.isPressed()))&&(opMode.getRuntime() < timeout))
         {
-            leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+            leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             if (leftSlideLimit.isPressed()){
                 leftSlide.setPower(0);
+                leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }else{
                 leftSlide.setPower(slidePower);
             }
 
             if (rightSlideLimit.isPressed()){
                 rightSlide.setPower(0);
+                rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }else{
                 rightSlide.setPower(slidePower);
             }
-            SpecialSleep(100);
         }
 
         // at least one of the slide limits has been pressed when we get to here, stop both slide motors, and then reset encoders to zero
+        leftSlide.setPower(0);
+        rightSlide.setPower(0);
         leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightSlide.setPower(0);
-        leftSlide.setPower(0);
         leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }

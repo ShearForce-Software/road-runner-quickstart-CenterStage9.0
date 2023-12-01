@@ -27,7 +27,7 @@ public class Concept_ScissorLift_Motor extends LinearOpMode {
 
         // Hardware map
 
-        leftScissor = hardwareMap.get(DcMotor.class, "leftScissor");
+        leftScissor = hardwareMap.get(DcMotor.class, "centerOdometry");
 
 
         // Initialize servo
